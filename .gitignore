@@ -1,0 +1,26 @@
+# Dependency folders 
+backend/node_modules/
+frontend/node_modules/
+
+# Environment files (Chứa secret keys, mật khẩu database - Tuyệt đối không push)
+backend/.env
+frontend/.env
+.env
+
+# Build folders (Sản phẩm sau khi compile, không cần lưu trên Git)
+frontend/dist/
+frontend/build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+backend/logs/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor folders
+.vscode/
+.idea/
