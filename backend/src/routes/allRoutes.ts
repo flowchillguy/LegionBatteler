@@ -1,11 +1,12 @@
 import express from "express";
+import authRoute from './authRoute.js'
 
 const router = express.Router();
 
 // ============================================================ 
 // PUBLIC ROUTES
 // ============================================================ 
-
+router.use('/auth', authRoute);
 
 // ============================================================ 
 // PRIVATE ROUTES
@@ -22,5 +23,7 @@ const router = express.Router();
   router.use('/characters', characterRoute);
   router.use('/inventory', inventoryRoute);
 */
+
+
 
 export default router

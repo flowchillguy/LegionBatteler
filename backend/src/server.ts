@@ -26,7 +26,7 @@ app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 // Giúp Server có thể "đọc" và hiểu được các đoạn Cookies mà trình duyệt gửi kèm theo mỗi request
 app.use(cookieParser());
 
-app.use("/", apiRoutes);
+app.use("/api", apiRoutes);
 
 connectDB().then(() => {
   app.listen(PORT, () => {
