@@ -19,7 +19,7 @@ export const signUp = async (req: Request, res: Response) => {
     if (error.message === "LỖI USER ĐÃ TỒN TẠI!") {
       return res.status(400).json({ message: "Username đã tồn tại!" });
     }
-    console.error("Lỗi khi gọi createAccount!", error);
+    console.error("Lỗi khi gọi signUp!", error);
     return res.status(500).json({ message: "Lỗi máy chủ nội bộ." });
   }
 };
@@ -48,11 +48,26 @@ export const signIn = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ message: "Username hoặc password không chính xác" });
-    console.error("Lỗi khi gọi authenticateUser", error);
+    console.error("Lỗi khi gọi signIn", error);
     return res.status(500).json({ message: "Lỗi máy chủ nội bộ." });
   }
 };
 
-export const signOut = async (req: Request, res: Response) => {};
+export const signOut = async (req: Request, res: Response) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    if (refreshToken) {
+      await revokeSession(refreshToken);
+
+      // Xóa cookie
+      res.clearCookie("refreshToken");
+    }
+
+    return res.status(204);
+  } catch (error) {
+    console.error("Lỗi khi gọi signOut", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
 
 export const refresh = async (req: Request, res: Response) => {};

@@ -83,6 +83,9 @@ export const authenticateUser = async (data: {
   return [accessToken, refreshToken, REFRESH_TOKEN_TTL];
 };
 
-export const revokeSession = async () => {};
+export const revokeSession = async (refreshToken: string) => {
+  // Xóa refresh token trong CSDL
+  await Session.deleteOne({ refreshToken: refreshToken });
+};
 
 export const renewAccessToken = async () => {};

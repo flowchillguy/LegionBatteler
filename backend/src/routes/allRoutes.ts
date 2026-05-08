@@ -1,16 +1,18 @@
 import express from "express";
-import authRoute from './authRoute.js'
+import authRoute from "./authRoute.js";
+import { protectedRoute } from "../middlewares/authMiddleware.js";
+import userRoute from "./userRoute.js";
 
 const router = express.Router();
 
-// ============================================================ 
+// ============================================================
 // PUBLIC ROUTES
-// ============================================================ 
-router.use('/auth', authRoute);
+// ============================================================
+router.use("/auth", authRoute);
 
-// ============================================================ 
+// ============================================================
 // PRIVATE ROUTES
-// ============================================================ 
+// ============================================================
 // Cách 1: Gắn middleware bảo vệ trực tiếp vào từng luồng
 // router.use('/users', protectedRoute, userRoute);
 // router.use('/characters', protectedRoute, characterRoute);
@@ -23,7 +25,7 @@ router.use('/auth', authRoute);
   router.use('/characters', characterRoute);
   router.use('/inventory', inventoryRoute);
 */
+router.use(protectedRoute);
+router.use("/user", userRoute);
 
-
-
-export default router
+export default router;
