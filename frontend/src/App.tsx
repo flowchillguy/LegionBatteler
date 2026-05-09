@@ -1,26 +1,25 @@
-import { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import MainLobbyPage from "./pages/MainLobbyPage";
+import { Toaster } from "sonner";
 
 function App() {
-  // Khai báo state 'gold' khởi đầu là 0
-  const [gold, setGold] = useState(0);
-
-  const handleFarm = () => {
-    // Mỗi lần click, tăng gold lên 10
-    setGold(gold + 10);
-  };
-
   return (
-    <div className="p-10 text-center">
-      <h1 className="text-2xl font-bold">Legion Battler - Tài sản</h1>
-      <p className="text-xl my-4 text-yellow-500">Vàng hiện có: {gold} 💰</p>
-      
-      <button 
-        onClick={handleFarm}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        Đi farm vàng
-      </button>
-    </div>
+    <>
+      {/* Đặt Toaster ở đầu với richColors giúp thông báo hiển thị trên tất cả các trang */}
+      <Toaster richColors />
+      <BrowserRouter>
+        <Routes>
+          {/* public routes */}
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+
+          {/* protected routes */}
+          <Route path="/" element={<MainLobbyPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
