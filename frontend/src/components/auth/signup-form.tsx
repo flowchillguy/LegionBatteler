@@ -128,10 +128,15 @@ export function SignUpForm({
                   </Field>
 
                   <Field>
+                    <FieldLabel htmlFor="confirm-password">
+                      Xác Nhận Mật Khẩu
+                    </FieldLabel>
                     <div className="relative">
-                      <FieldLabel htmlFor="confirm-password">
-                        Xác Nhận Mật Khẩu
-                      </FieldLabel>
+                      <Input
+                        id="confirm-password"
+                        type={showPassword ? "text" : "password"}
+                        {...register("confirmPassword")}
+                      />
 
                       <button
                         type="button"
@@ -145,11 +150,6 @@ export function SignUpForm({
                         )}
                       </button>
                     </div>
-                    <Input
-                      id="confirm-password"
-                      type={showPassword ? "text" : "password"}
-                      {...register("confirmPassword")}
-                    />
 
                     {errors.confirmPassword && (
                       <p className="text-destructive text-sm">

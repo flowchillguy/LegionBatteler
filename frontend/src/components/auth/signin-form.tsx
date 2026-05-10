@@ -9,12 +9,14 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import signUpImg from "@/assets/placeholderSignUp.jpg";
+import signInImg from "@/assets/placeholderSignIn.jpg";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
 
 const signInSchema = z.object({
   username: z
@@ -27,25 +29,34 @@ const signInSchema = z.object({
   password: z.string().min(6, "Mật khẩu phải có ít nhất 6 kí tự!"),
 });
 
-type SignUpFormValues = z.infer<typeof signInSchema>;
+type SignInFormValues = z.infer<typeof signInSchema>;
 
 export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const { signIn } = useAuthStore();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpFormValues>({
+  } = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
   });
 
   // Quản lý trạng thái hiển thị/ẩn mật khẩu
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = async (data: SignUpFormValues) => {
+  const onSubmit = async (data: SignInFormValues) => {
+    const { username, password } = data;
+
     // Gọi api tới backend để signin
+    const isSuccess = await signIn(username, password);
+
+    if (isSuccess) {
+      navigate("/");
+    }
   };
 
   return (
@@ -122,7 +133,7 @@ export function SignInForm({
           </form>
           <div className="relative hidden bg-muted md:block">
             <img
-              src={signUpImg}
+              src={signInImg}
               alt="Image"
               className=" absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
