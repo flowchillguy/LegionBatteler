@@ -9,7 +9,7 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 3000;
 
 // ============================================================
 // Cài đặt các Middleware toàn cục

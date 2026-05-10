@@ -18,20 +18,7 @@ export const protectedRoute = (
     // Lấy token từ header
     const authHeader = req.headers.authorization;
 
-    // Debug 1: Xem client gửi lên cái gì
-    console.log("1. Auth Header:", authHeader);
-
-    // Kiểm tra xem header có tồn tại và đúng chuẩn 'Bearer ' không
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res
-        .status(401)
-        .json({ message: "Không tìm thấy token hoặc sai định dạng Header" });
-    }
-
     const token = authHeader?.split(" ")[1]; // Bearer <Token>
-
-    // Debug 2: Xem token sau khi tách có đúng cấu trúc 3 phần ngăn bằng dấu chấm không
-    console.log("2. Token extracted:", token);
 
     if (!token) {
       return res.status(401).json({ message: "Không tìm thấy access token" });

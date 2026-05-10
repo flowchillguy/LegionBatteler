@@ -10,22 +10,43 @@ const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 1000; // 14 ngày
 interface SignUpData {
   username?: string;
   password?: string;
+  confirmPassword?: string;
   email?: string;
   firstName?: string;
   lastName?: string;
 }
 
+const usernameRegex = /^[a-zA-Z0-9_]+$/;
+
 export const createAccount = async (data: SignUpData) => {
-  const { username, password, email, firstName, lastName } = data;
+  const { username, password, confirmPassword, email, firstName, lastName } =
+    data;
 
   // Kiểm tra dữ liệu đầu vào
-  if (!username || !password || !email || !firstName || !lastName) {
+  if (
+    !username ||
+    !password ||
+    !confirmPassword ||
+    !email ||
+    !firstName ||
+    !lastName
+  ) {
     throw new Error("LỖI NHẬP THIẾU DỮ LIỆU!");
+  }
+
+  // Kiểm tra username có đúng định dạng chưa.
+  if (!usernameRegex.test(username)) {
+    throw new Error("TÊN ĐĂNG NHẬP KHÔNG HỢP LỆ");
   }
 
   // Kiểm tra trùng username
   const duplicate = await User.findOne({ username });
   if (duplicate) throw new Error("LỖI USER ĐÃ TỒN TẠI!");
+
+  // Khớp password với cofirmPassword
+  if (password !== confirmPassword) {
+    throw new Error("LỖI MẬT KHẨU XÁC NHẬN KHÔNG ĐÚNG!");
+  }
 
   // Mã hóa mật khẩu
   const hashedPassword = await bcrypt.hash(password, 10);

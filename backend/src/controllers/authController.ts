@@ -11,6 +11,9 @@ export const signUp = async (req: Request, res: Response) => {
     await createAccount(req.body);
     return res.status(201).json({ message: "Tạo tài khoản thành công!" });
   } catch (error: any) {
+    if (error.message === "TÊN ĐĂNG NHẬP KHÔNG HỢP LỆ") {
+      return res.status(400).json({ message: "Tên đăng nhập không hợp lệ!" });
+    }
     if (error.message === "LỖI NHẬP THIẾU DỮ LIỆU!") {
       return res
         .status(400)
@@ -18,6 +21,9 @@ export const signUp = async (req: Request, res: Response) => {
     }
     if (error.message === "LỖI USER ĐÃ TỒN TẠI!") {
       return res.status(400).json({ message: "Username đã tồn tại!" });
+    }
+    if (error.message === "LỖI MẬT KHẨU XÁC NHẬN KHÔNG ĐÚNG!") {
+      return res.status(400).json({ message: "Mật khẩu xác nhận không khớp" });
     }
     console.error("Lỗi khi gọi signUp!", error);
     return res.status(500).json({ message: "Lỗi máy chủ nội bộ." });
