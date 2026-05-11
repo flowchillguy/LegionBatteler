@@ -109,4 +109,26 @@ export const revokeSession = async (refreshToken: string) => {
   await Session.deleteOne({ refreshToken: refreshToken });
 };
 
-export const renewAccessToken = async () => {};
+export const renewAccessToken = async (refreshToken: string) => {
+  // So sánh với refesh token trong database
+  const session = await Session.findOne({ refreshToken: refreshToken });
+  if (!session) {
+    throw new Error("KHÔNG TÌM THẤY REFRESH TOKEN TRONG DB");
+  }
+
+  // Kiểm tra hạn sử dụng của refesh token
+  if (session.expiresAt < new Date()) {
+    throw new Error("REFRESH ĐÃ TOKEN HẾT HẠN");
+  }
+
+  // Tạo access token mới
+  const accessToken = jwt.sign(
+    { userId: session.userId },
+    // @ts-ignore
+    process.env.ACCESS_TOKEN_SECRET,
+    { expiresIn: ACCESS_TOKEN_TTL },
+  );
+
+  // Return
+  return accessToken;
+};

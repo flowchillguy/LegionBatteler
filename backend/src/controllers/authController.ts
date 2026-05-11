@@ -76,4 +76,27 @@ export const signOut = async (req: Request, res: Response) => {
   }
 };
 
-export const refresh = async (req: Request, res: Response) => {};
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    // Lấy refresh token trong cookie
+    const token = req.cookies?.refreshToken;
+    if (!token) {
+      return res.status(401).json({ message: "Token không tồn tại!" });
+    }
+
+    const newAccessToken = await renewAccessToken(token);
+
+    return res.status(200).json({ accessToken: newAccessToken });
+  } catch (error: any) {
+    if (error.message === "KHÔNG TÌM THẤY REFRESH TOKEN TRONG DB") {
+      return res
+        .status(403)
+        .json({ message: "refresh token không hợp lệ hoặc đã hết hạn!" });
+    }
+    if (error.message === "REFRESH ĐÃ TOKEN HẾT HẠN") {
+      return res.status(403).json({ message: "refresh token đã hết hạn!" });
+    }
+    console.error("Lỗi khi gọi refesh", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};

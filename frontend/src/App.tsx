@@ -3,6 +3,8 @@ import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
 import MainLobbyPage from "./pages/MainLobbyPage";
 import { Toaster } from "sonner";
+import TrialPage from "./pages/TrialPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
   return (
@@ -14,9 +16,12 @@ function App() {
           {/* public routes */}
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/trial" element={<TrialPage />} />
 
           {/* protected routes */}
-          <Route path="/" element={<MainLobbyPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<MainLobbyPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

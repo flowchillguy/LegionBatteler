@@ -1,7 +1,7 @@
 import express from "express";
 import authRoute from "./authRoute.js";
 import { protectedRoute } from "../middlewares/authMiddleware.js";
-import userRoute from "./userRoute.js";
+import userRoute from "./usersRoute.js";
 
 const router = express.Router();
 
@@ -26,6 +26,6 @@ router.use("/auth", authRoute);
   router.use('/inventory', inventoryRoute);
 */
 router.use(protectedRoute);
-router.use("/user", userRoute);
+router.use("/users", userRoute);
 
 export default router;

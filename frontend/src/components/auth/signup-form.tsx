@@ -232,11 +232,11 @@ export function SignUpForm({
                   Đăng kí
                 </Button>
               </Field>
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                Bạn đã có tài khoản?
-              </FieldSeparator>
+              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card"></FieldSeparator>
               <FieldDescription className="text-center">
-                <a href="/signin">Đăng nhập</a>
+                Bạn đã có tài khoản? <a href="/signin">Đăng nhập</a>
+                <br />
+                Bạn không muốn đăng kí? <a href="/trial">Chơi thử</a>
               </FieldDescription>
             </FieldGroup>
           </form>
