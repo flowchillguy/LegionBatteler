@@ -1,7 +1,8 @@
 import express from "express";
-import authRoute from "./authRoute.js";
 import { protectedRoute } from "../middlewares/authMiddleware.js";
+import authRoute from "./authRoute.js";
 import userRoute from "./usersRoute.js";
+import friendRoute from "./friendRoute.js";
 
 const router = express.Router();
 
@@ -27,5 +28,6 @@ router.use("/auth", authRoute);
 */
 router.use(protectedRoute);
 router.use("/users", userRoute);
+router.use("/friends", friendRoute);
 
 export default router;
