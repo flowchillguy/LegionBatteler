@@ -56,10 +56,56 @@ export const createFriendRequest = async (
     message,
   });
 
-  return request
+  return request;
 };
-export const createFriendship = () => {};
-export const deleteFriendRequest = () => {};
-export const deleteFriendship = () => {};
-export const fetchUserFriends = () => {};
-export const fetchFriendRequests = () => {};
+
+export const createFriendship = async (requestId: any, userId: string) => {
+  // Kiểm tra xem lời mời có tồn tại không
+  const request = await FriendRequest.findById(requestId);
+  if (!request) {
+    throw new Error("Lỗi! Không tìm thấy lời mời kết bạn!");
+  }
+
+  // Kiểm tra xem đúng người được mời không
+  if (request.to.toString() !== userId.toString()) {
+    throw new Error("Lỗi! Bạn không có quyền chấp nhận lời mời này!");
+  }
+
+  // Tạo quan hệ bạn bè
+  const friend = await Friend.create({
+    userA: request.from,
+    userB: request.to,
+  });
+
+  // Xóa yêu cầu đã chấp nhận
+  await FriendRequest.findByIdAndDelete(requestId);
+
+  // Trả về thông tin bạn bè mới chấp nhận
+  const from = await User.findById(request.from)
+    .select("_id displayName")
+    .lean(); // lean giúp trả về json thay vì document => tối ưu hơn
+
+  return {
+    _id: from?._id,
+    displayName: from?.displayName,
+  };
+};
+
+export const deleteFriendRequest = async (requestId: any, userId: string) => {
+  const request = await FriendRequest.findById(requestId);
+  if (!request) {
+    throw new Error("Lỗi! Không tìm thấy lời mời kết bạn!");
+  }
+
+  if (request.to.toString() !== userId.toString()) {
+    throw new Error("Lỗi! Bạn không có quyền từ chối lời mời này!");
+  }
+
+  await FriendRequest.findByIdAndDelete(requestId);
+};
+
+export const deleteFriendship = async () => {};
+
+export const fetchUserFriends = async () => {};
+
+export const fetchFriendRequests = async () => {};

@@ -1,6 +1,10 @@
 import type { Response } from "express";
 import type { CustomRequest } from "../models/CustomRequest.js";
-import { createFriendRequest } from "../services/friendService.js";
+import {
+  createFriendRequest,
+  createFriendship,
+  deleteFriendRequest,
+} from "../services/friendService.js";
 
 export const sendFriendRequest = async (req: CustomRequest, res: Response) => {
   try {
@@ -36,7 +40,21 @@ export const acceptFriendRequest = async (
   res: Response,
 ) => {
   try {
-  } catch (error) {
+    const { requestId } = req.params;
+    const userId = req.user._id; // Đây là id của người đang đăng nhập
+
+    const newFriend = await createFriendship(requestId, userId);
+    return res.status(200).json({
+      message: "Chấp nhận lời mời kết bạn thành công",
+      newFriend,
+    });
+  } catch (error: any) {
+    if (error.message === "Lỗi! Không tìm thấy lời mời kết bạn!") {
+      return res.status(404).json({ message: error.message });
+    }
+    if (error.message === "Lỗi! Bạn không có quyền chấp nhận lời mời này!") {
+      return res.status(403).json({ message: error.message });
+    }
     console.error("Lỗi khi chấp nhận lời mời kết bạn!", error);
     return res.status(500).json({ message: "Lỗi hệ thống!" });
   }
@@ -47,7 +65,20 @@ export const declineFriendRequest = async (
   res: Response,
 ) => {
   try {
-  } catch (error) {
+    const { requestId } = req.params;
+    const userId = req.user._id;
+
+    await deleteFriendRequest(requestId, userId);
+    return res.status(204).json({
+      message: "Từ chối lời mời kết bạn thành công",
+    });
+  } catch (error: any) {
+    if (error.message === "Lỗi! Không tìm thấy lời mời kết bạn!") {
+      return res.status(404).json({ message: error.message });
+    }
+    if (error.message === "Lỗi! Bạn không có quyền từ chối lời mời này!") {
+      return res.status(403).json({ message: error.message });
+    }
     console.error("Lỗi khi từ chối lời mời kết bạn!", error);
     return res.status(500).json({ message: "Lỗi hệ thống!" });
   }

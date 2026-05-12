@@ -9,7 +9,6 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import signInImg from "@/assets/placeholderSignIn.jpg";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -133,7 +132,7 @@ export function SignInForm({
           </form>
           <div className="relative hidden bg-muted md:block">
             <img
-              src={signInImg}
+              src="./authPublic/placeholderSignIn.jpg"
               alt="Image"
               className=" absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
