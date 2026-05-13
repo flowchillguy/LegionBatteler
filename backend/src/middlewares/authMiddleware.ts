@@ -15,7 +15,7 @@ export const protectedRoute = (
   next: NextFunction,
 ) => {
   try {
-    // Lấy token từ header
+    // Lấy access token từ header
     const authHeader = req.headers.authorization;
 
     const token = authHeader?.split(" ")[1]; // Bearer <Token>
@@ -24,7 +24,7 @@ export const protectedRoute = (
       return res.status(401).json({ message: "Không tìm thấy access token" });
     }
 
-    // Xác minh token có hợp lệ không?
+    // Xác minh access token có hợp lệ không?
     jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET as string,

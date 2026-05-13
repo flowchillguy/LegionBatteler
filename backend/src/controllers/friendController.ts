@@ -4,6 +4,9 @@ import {
   createFriendRequest,
   createFriendship,
   deleteFriendRequest,
+  deleteFriendship,
+  fetchFriendRequests,
+  fetchUserFriends,
 } from "../services/friendService.js";
 
 export const sendFriendRequest = async (req: CustomRequest, res: Response) => {
@@ -69,9 +72,9 @@ export const declineFriendRequest = async (
     const userId = req.user._id;
 
     await deleteFriendRequest(requestId, userId);
-    return res.status(204).json({
-      message: "Từ chối lời mời kết bạn thành công",
-    });
+    return res
+      .status(204) // http status code 204 mặc định sẽ không gửi content - bỏ qua nội dung trong body
+      .json({ message: "Từ chối lời mời kết bạn thành công" });
   } catch (error: any) {
     if (error.message === "Lỗi! Không tìm thấy lời mời kết bạn!") {
       return res.status(404).json({ message: error.message });
@@ -86,7 +89,19 @@ export const declineFriendRequest = async (
 
 export const unfriend = async (req: CustomRequest, res: Response) => {
   try {
-  } catch (error) {
+    // Lấy id bạn bè
+    const { friendshipId } = req.params;
+    const userId = req.user._id;
+
+    await deleteFriendship(friendshipId, userId);
+    return res.sendStatus(204);
+  } catch (error: any) {
+    if (
+      error.message ===
+      "Lỗi! Không có dữ liệu bạn bè hoặc bạn không có quyền xóa!"
+    ) {
+      return res.status(404).json({ message: error.message });
+    }
     console.error("Lỗi khi hủy kết bạn!", error);
     return res.status(500).json({ message: "Lỗi hệ thống!" });
   }
@@ -94,6 +109,10 @@ export const unfriend = async (req: CustomRequest, res: Response) => {
 
 export const getAllFriends = async (req: CustomRequest, res: Response) => {
   try {
+    const userId = req.user._id;
+    const friends = await fetchUserFriends(userId);
+
+    return res.status(200).json({ friends });
   } catch (error) {
     console.error("Lỗi khi lấy danh sách bạn bè!", error);
     return res.status(500).json({ message: "Lỗi hệ thống!" });
@@ -102,6 +121,10 @@ export const getAllFriends = async (req: CustomRequest, res: Response) => {
 
 export const getFriendRequests = async (req: CustomRequest, res: Response) => {
   try {
+    const userId = req.user._id;
+    const [sent, received] = await fetchFriendRequests(userId);
+
+    return res.status(200).json({ sent, received });
   } catch (error) {
     console.error("Lỗi khi lấy danh sách yêu cầu kết bạn!", error);
     return res.status(500).json({ message: "Lỗi hệ thống!" });

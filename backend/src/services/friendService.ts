@@ -104,8 +104,47 @@ export const deleteFriendRequest = async (requestId: any, userId: string) => {
   await FriendRequest.findByIdAndDelete(requestId);
 };
 
-export const deleteFriendship = async () => {};
+export const deleteFriendship = async (friendshipId: any, userId: string) => {
+  const deleteFriend = await Friend.findOneAndDelete({
+    _id: friendshipId,
+    $or: [{ userA: userId }, { userB: userId }],
+  });
+  if(!deleteFriend) {
+    throw new Error("Lỗi! Không có dữ liệu bạn bè hoặc bạn không có quyền xóa!")
+  }
+};
 
-export const fetchUserFriends = async () => {};
+export const fetchUserFriends = async (userId: string) => {
+  const friendships = await Friend.find({
+    $or: [{ userA: userId }, { userB: userId }],
+  })
+    .populate("userA", "_id displayName")
+    .populate("userB", "_id displayName")
+    .lean();
 
-export const fetchFriendRequests = async () => {};
+  if (!friendships.length) {
+    return [];
+  }
+
+  const friends = friendships.map((f) => {
+    const friendInfo =
+      f.userA._id.toString() === userId.toString() ? f.userB : f.userA;
+    return {
+      ...friendInfo,
+      friendshipId: f._id,
+    };
+  });
+
+  return friends;
+};
+
+export const fetchFriendRequests = async (userId: string) => {
+  const populateFiels = "_id username displayName";
+
+  const [sent, received] = await Promise.all([
+    FriendRequest.find({ from: userId }).populate("to", populateFiels),
+    FriendRequest.find({ to: userId }).populate("from", populateFiels),
+  ]);
+
+  return [sent, received];
+};

@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/requests", sendFriendRequest);
 router.post("/requests/:requestId/accept", acceptFriendRequest);
 router.post("/requests/:requestId/decline", declineFriendRequest);
-router.post("/requests/:userId/unfriend", unfriend);
+router.delete("/requests/:friendshipId/unfriend", unfriend);
 router.get("/", getAllFriends);
 router.get("/requests", getFriendRequests);
 
