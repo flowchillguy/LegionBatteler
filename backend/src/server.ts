@@ -5,7 +5,8 @@ import cors from "cors";
 import apiRoutes from "./routes/allRoutes.js";
 import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 
 //Cấu hình đọc file env
 dotenv.config();
@@ -30,7 +31,7 @@ app.use(cookieParser());
 
 // swagger
 const swaggerDocument = JSON.parse(
-  fs.readFileSync("./srs/swagger.json", "utf-8"),
+  fs.readFileSync(path.join(import.meta.dirname, "swagger.json"), "utf-8"),
 );
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

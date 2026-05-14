@@ -1,0 +1,299 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Documentation",
+    "description": "Tài liệu API cho hệ thống Chat và Quản lý bạn bè",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Tạo tài khoản mới",
+        "tags": ["Auth"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" },
+                  "confirmPassword": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tạo tài khoản thành công!" },
+          "400": { "description": "Lỗi dữ liệu đầu vào (tên đăng nhập, thiếu dữ liệu, user tồn tại, pass không khớp)" },
+          "500": { "description": "Lỗi máy chủ nội bộ" }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "summary": "Đăng nhập",
+        "tags": ["Auth"],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User đã đăng nhập thành công!" },
+          "400": { "description": "Thiếu thông tin hoặc sai username/password" },
+          "500": { "description": "Lỗi máy chủ nội bộ" }
+        }
+      }
+    },
+    "/auth/signout": {
+      "post": {
+        "summary": "Đăng xuất",
+        "tags": ["Auth"],
+        "security": [],
+        "responses": {
+          "204": { "description": "Đăng xuất thành công" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Cấp lại access token bằng refresh token (qua cookie)",
+        "tags": ["Auth"],
+        "security": [],
+        "responses": {
+          "200": { "description": "Cấp token thành công" },
+          "401": { "description": "Token không tồn tại!" },
+          "403": { "description": "Refresh token không hợp lệ hoặc đã hết hạn!" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Lấy thông tin user hiện tại",
+        "tags": ["Users"],
+        "responses": {
+          "200": { "description": "Thành công" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/users/test": {
+      "get": {
+        "summary": "Kiểm tra kết nối/auth",
+        "tags": ["Users"],
+        "responses": {
+          "204": { "description": "Thành công" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/friends": {
+      "get": {
+        "summary": "Lấy danh sách bạn bè",
+        "tags": ["Friends"],
+        "responses": {
+          "200": { "description": "Thành công" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/friends/requests": {
+      "get": {
+        "summary": "Lấy danh sách yêu cầu kết bạn (đã gửi & đã nhận)",
+        "tags": ["Friends"],
+        "responses": {
+          "200": { "description": "Thành công" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      },
+      "post": {
+        "summary": "Gửi lời mời kết bạn",
+        "tags": ["Friends"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": { "type": "string", "description": "ID của người nhận" },
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Gửi lời mời kết bạn thành công!" },
+          "400": { "description": "Tự gửi cho mình, đã là bạn, hoặc đã có lời mời" },
+          "404": { "description": "Người dùng không tồn tại" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/friends/requests/{requestId}/accept": {
+      "post": {
+        "summary": "Chấp nhận lời mời kết bạn",
+        "tags": ["Friends"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Chấp nhận lời mời kết bạn thành công" },
+          "403": { "description": "Không có quyền" },
+          "404": { "description": "Không tìm thấy lời mời" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/friends/requests/{requestId}/decline": {
+      "post": {
+        "summary": "Từ chối lời mời kết bạn",
+        "tags": ["Friends"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "requestId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Từ chối thành công" },
+          "403": { "description": "Không có quyền" },
+          "404": { "description": "Không tìm thấy lời mời" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/friends/requests/{friendshipId}/unfriend": {
+      "delete": {
+        "summary": "Hủy kết bạn",
+        "tags": ["Friends"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "friendshipId",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Hủy kết bạn thành công" },
+          "404": { "description": "Không có dữ liệu hoặc không có quyền" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      }
+    },
+    "/message/general": {
+      "get": {
+        "summary": "Lấy tin nhắn chat tổng (phân trang bằng cursor)",
+        "tags": ["Messages"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limitString",
+            "schema": { "type": "string" },
+            "description": "Số lượng tin nhắn cần lấy"
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": { "type": "string" },
+            "description": "Cursor để phân trang"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Thành công" },
+          "500": { "description": "Lỗi hệ thống" }
+        }
+      },
+      "post": {
+        "summary": "Gửi tin nhắn vào chat tổng",
+        "tags": ["Messages"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string" },
+                  "guestName": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Thành công" },
+          "400": { "description": "Gửi tin nhắn rỗng" }
+        }
+      }
+    },
+    "/message/room": {
+      "post": {
+        "summary": "Gửi tin nhắn vào phòng chat riêng",
+        "tags": ["Messages"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Thành công" },
+          "400": { "description": "Thiếu nội dung" }
+        }
+      }
+    }
+  }
+}
