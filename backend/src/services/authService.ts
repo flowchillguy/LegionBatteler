@@ -56,7 +56,7 @@ export const createAccount = async (data: SignUpData) => {
     username,
     hashedPassword,
     email,
-    displayName: `${firstName} ${lastName}`,
+    displayName: `${lastName} ${firstName}`,
   });
 
   return newUser;

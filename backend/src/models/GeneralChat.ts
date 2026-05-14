@@ -1,6 +1,9 @@
 // Lưu tin nhắn chat tổng
 import mongoose from "mongoose";
 
+// tính theo s(giây)
+const MESSAGE_TTL = 7 * 24 * 60 * 60;
+
 const generalChatSchema = new mongoose.Schema(
   {
     senderId: {
@@ -13,6 +16,7 @@ const generalChatSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
+      maxlength: [500, "Tin nhắn không được vượt quá 500 ký tự"],
     },
   },
   {
@@ -20,8 +24,8 @@ const generalChatSchema = new mongoose.Schema(
   },
 );
 
-// Sắp xếp và tự xóa sau 1h = 3600s
-generalChatSchema.index({ createdAt: -1 }, { expireAfterSeconds: 3600 });
+// Sắp xếp và tự xóa
+generalChatSchema.index({ createdAt: -1 }, { expireAfterSeconds: MESSAGE_TTL });
 
 const GeneralChat = mongoose.model("GeneralChat", generalChatSchema);
 

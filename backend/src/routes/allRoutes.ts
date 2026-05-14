@@ -9,11 +9,11 @@ const router = express.Router();
 
 // PUBLIC ROUTES
 router.use("/auth", authRoute);
-router.use("/message", messageRoute);
 
 // PRIVATE ROUTES
 router.use(protectedRoute);
 router.use("/users", userRoute);
 router.use("/friends", friendRoute);
+router.use("/message", messageRoute);
 
 export default router;
