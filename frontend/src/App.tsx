@@ -5,8 +5,17 @@ import MainLobbyPage from "./pages/MainLobbyPage";
 import { Toaster } from "sonner";
 import TrialPage from "./pages/TrialPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { useThemeStore } from "@/stores/useThemeStore";
+import { useEffect } from "react";
 
 function App() {
+  // Chạy mặc định sáng tối
+  const { isDark, setTheme } = useThemeStore();
+
+  useEffect(() => {
+    setTheme(isDark);
+  }, [isDark]);
+
   return (
     <>
       {/* Đặt Toaster ở đầu với richColors giúp thông báo hiển thị trên tất cả các trang */}

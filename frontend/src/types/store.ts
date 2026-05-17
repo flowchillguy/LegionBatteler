@@ -24,3 +24,9 @@ export interface AuthState {
   fetchMe: () => Promise<void>;
   refresh: () => Promise<void>;
 }
+
+export interface ThameState {
+  isDark: boolean;
+  toggleTheme: () => void;
+  setTheme: (dark: boolean) => void;
+}

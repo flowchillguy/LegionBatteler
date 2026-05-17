@@ -241,9 +241,9 @@ export function SignUpForm({
           </form>
           <div className="relative hidden bg-muted md:block">
             <img
-              src='./authPublic/placeholderSignUp.jpg'
+              src="./authPublic/placeholderSignUp.jpg"
               alt="Image"
-              className=" absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className=" absolute inset-0 h-full w-full object-cover dark:brightness-[0.8]"
             />
           </div>
         </CardContent>
