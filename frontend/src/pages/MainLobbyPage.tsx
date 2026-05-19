@@ -2,6 +2,7 @@ import Logout from "@/components/auth/logout";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useThemeStore } from "@/stores/useThemeStore";
 import React from "react";
 import { toast } from "sonner";
 
@@ -19,12 +20,27 @@ const MainLobbyPage = () => {
       console.error(error);
     }
   };
+
+  // theme light/dark
+  const { isDark, toggleTheme } = useThemeStore();
+
   return (
-    <div>
-      {user?.username}
-      <Logout />
-      <Button onClick={handleOnClickTest}>TEST</Button>
-    </div>
+    <>
+      <div>
+        {user?.username}
+        <Logout />
+        <Button onClick={handleOnClickTest}>TEST</Button>
+      </div>
+      {/* Nút thử sáng tối */}
+      <div>
+        <Button
+          onClick={toggleTheme}
+          className={isDark ? "bg-slate-800 text-white" : "bg-white text-black"}
+        >
+          {isDark ? "Chế độ Tối" : "Chế độ Sáng"}
+        </Button>
+      </div>
+    </>
   );
 };
 

@@ -1,0 +1,8 @@
+packages:
+  - 'backend'
+  - 'frontend'
+allowBuilds:
+  '@scarf/scarf': false
+  bcrypt: true
+  esbuild: true
+  msw: true

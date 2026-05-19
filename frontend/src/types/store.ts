@@ -1,3 +1,4 @@
+import type { Message } from "./chat";
 import type { User } from "./user";
 
 export interface AuthState {
@@ -29,4 +30,14 @@ export interface ThameState {
   isDark: boolean;
   toggleTheme: () => void;
   setTheme: (dark: boolean) => void;
+}
+
+export interface GeneralChatState {
+  messages: {
+    items: Message[];
+    hasMore: boolean; // infinite-scroll
+    nextCursor?: string | null; // Phân trang
+  };
+  loading: boolean;
+  reset: () => void;
 }
