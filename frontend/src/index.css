@@ -22,6 +22,18 @@
   }
 }
 
+@layer components {
+  .game-wrapper {
+    @apply min-h-screen p-4;
+
+    @apply bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200 text-slate-900;
+  }
+
+  .dark .game-wrapper {
+    @apply from-slate-950 via-slate-900 to-slate-950 text-slate-100;
+  }
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -229,7 +241,8 @@ code {
   --accent-bg: rgba(192, 132, 252, 0.15);
   --accent-border: rgba(192, 132, 252, 0.5);
   --social-bg: rgba(47, 48, 58, 0.5);
-  --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
