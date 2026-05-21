@@ -2,9 +2,22 @@ import { Card } from "@/components/ui.figma/card";
 import { Button } from "@/components/ui.figma/button";
 import { Input } from "@/components/ui.figma/input";
 import { ScrollArea } from "@/components/ui.figma/scroll-area";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui.figma/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui.figma/dropdown-menu";
 import { Badge } from "@/components/ui.figma/badge";
-import { Settings, Send, Trophy, UserPlus, Coins, Gem, Sparkles } from "lucide-react";
+import {
+  Settings,
+  Send,
+  Trophy,
+  UserPlus,
+  Coins,
+  Gem,
+  Sparkles,
+} from "lucide-react";
 
 export default function App() {
   const mockFriends = [
@@ -31,10 +44,16 @@ export default function App() {
             <h2 className="text-lime-400">DragonSlayer</h2>
             <p className="text-sm text-slate-400">@dragonslayer_pro</p>
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="border-lime-500/50 text-lime-400">
+              <Badge
+                variant="outline"
+                className="border-lime-500/50 text-lime-400"
+              >
                 Level 42
               </Badge>
-              <Badge variant="outline" className="border-lime-500/50 text-lime-400">
+              <Badge
+                variant="outline"
+                className="border-lime-500/50 text-lime-400"
+              >
                 Diamond Rank
               </Badge>
             </div>
@@ -69,7 +88,8 @@ export default function App() {
             </div>
             <div className="bg-slate-800/60 rounded p-2 overflow-hidden">
               <div className="animate-pulse text-xs text-slate-300">
-                <span className="text-lime-400">[System]</span> Event: Double XP Weekend starts now! 🎉
+                <span className="text-lime-400">[System]</span> Event: Double XP
+                Weekend starts now! 🎉
               </div>
             </div>
           </div>
@@ -114,7 +134,11 @@ export default function App() {
           <div className="h-full flex flex-col gap-3">
             <div className="flex items-center justify-between">
               <h3 className="text-lime-400">Friends</h3>
-              <Button size="sm" variant="ghost" className="hover:bg-lime-500/20">
+              <Button
+                size="sm"
+                variant="ghost"
+                className="hover:bg-lime-500/20"
+              >
                 <UserPlus className="w-4 h-4 text-lime-400" />
               </Button>
             </div>
@@ -126,13 +150,20 @@ export default function App() {
                     className="flex items-center justify-between p-2 rounded bg-slate-800/40 hover:bg-slate-800/60 transition-colors cursor-pointer"
                   >
                     <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${
-                        friend.status === 'online' ? 'bg-lime-400' :
-                        friend.status === 'in-game' ? 'bg-yellow-400' : 'bg-slate-600'
-                      }`} />
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          friend.status === "online"
+                            ? "bg-lime-400"
+                            : friend.status === "in-game"
+                              ? "bg-yellow-400"
+                              : "bg-slate-600"
+                        }`}
+                      />
                       <span className="text-sm">{friend.name}</span>
                     </div>
-                    <span className="text-xs text-slate-500">{friend.status}</span>
+                    <span className="text-xs text-slate-500">
+                      {friend.status}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -153,7 +184,9 @@ export default function App() {
           <div className="h-full flex flex-col items-center justify-center gap-4">
             <div className="text-4xl">⚔️</div>
             <h3 className="text-lime-400 text-center">Unit Shop</h3>
-            <p className="text-xs text-slate-400 text-center">Buy troops and upgrades</p>
+            <p className="text-xs text-slate-400 text-center">
+              Buy troops and upgrades
+            </p>
             <Button className="bg-lime-500 hover:bg-lime-600 text-black w-full">
               Open Shop
             </Button>
@@ -179,7 +212,10 @@ export default function App() {
                 placeholder="Type message..."
                 className="flex-1 bg-slate-800/60 border-slate-700 focus-visible:ring-lime-500"
               />
-              <Button size="icon" className="bg-lime-500 hover:bg-lime-600 text-black">
+              <Button
+                size="icon"
+                className="bg-lime-500 hover:bg-lime-600 text-black"
+              >
                 <Send className="w-4 h-4" />
               </Button>
             </div>
@@ -203,7 +239,9 @@ export default function App() {
           <div className="h-full flex flex-col items-center justify-center gap-4">
             <Trophy className="w-20 h-20 text-black" />
             <h2 className="text-3xl text-black">RANK</h2>
-            <p className="text-sm text-black/80 text-center">Find Ranked Match</p>
+            <p className="text-sm text-black/80 text-center">
+              Find Ranked Match
+            </p>
           </div>
         </Card>
       </div>
