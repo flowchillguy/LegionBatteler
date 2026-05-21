@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui.figma/card";
 import TopLeft from "@/components/lobby/topLeft";
 import TopCenter from "@/components/lobby/topCenter";
 import TopRight from "@/components/lobby/topRight";
@@ -7,6 +8,7 @@ import MiddleRight from "@/components/lobby/middleRight";
 import BottomLeft from "@/components/lobby/bottomLeft";
 import BottomCenter from "@/components/lobby/bottomCenter";
 import BottomRight from "@/components/lobby/bottomRight";
+import MainLobby from "@/components/lobby/mainLobby.tsx"
 
 const MainLobbyPage = () => {
   return (
@@ -14,33 +16,53 @@ const MainLobbyPage = () => {
       <div className="game-wrapper">
         <div className="h-screen grid grid-cols-12 grid-rows-12 gap-4">
           {/* Top Left - User Profile */}
-          <TopLeft />
+          <Card className="col-span-3 row-span-2 game-panel">
+            <TopLeft />
+          </Card>
 
           {/* Top Center - Resources & Mini Chat */}
-          <TopCenter />
+          <Card>
+            <TopCenter />
+          </Card>
 
           {/* Top Right - Leaderboard Button & Settings */}
-          <TopRight />
+          <Card>
+            <TopRight />
+          </Card>
 
           {/* Left Middle - Friends List */}
-          <MiddleLeft />
+          <Card>
+            <MiddleLeft />
+          </Card>
 
           {/* Center - Game Canvas Area */}
-          <MiddleCenter />
+          <Card>
+            <MiddleCenter />
+          </Card>
 
           {/* Right Middle - Unit Shop */}
-          <MiddleRight />
+          <Card>
+            <MiddleRight />
+          </Card>
 
           {/* Bottom Left - Global Chat */}
-          <BottomLeft />
+          <Card>
+            <BottomLeft />
+          </Card>
 
           {/* Bottom Center - Campaign & PVE Buttons */}
-          <BottomCenter />
+          <Card>
+            <BottomCenter />
+          </Card>
 
           {/* Bottom Right - Rank (Matchmaking) Button */}
-          <BottomRight />
+          <Card>
+            <BottomRight />
+          </Card>
         </div>
       </div>
+
+      <div><MainLobby/></div>
     </>
   );
 };

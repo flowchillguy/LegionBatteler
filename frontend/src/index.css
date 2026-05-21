@@ -22,7 +22,7 @@
   }
 }
 
-@layer components {
+@layer utilities {
   .game-wrapper {
     @apply min-h-screen p-4;
 
@@ -34,7 +34,7 @@
   }
 
   .game-panel {
-    @apply col-span-3 row-span-2 p-4 backdrop-blur-md border;
+    @apply p-4 backdrop-blur-md border;
 
     @apply bg-white/50 border-slate-300/50 shadow-sm;
   }
