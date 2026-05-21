@@ -11,8 +11,8 @@ import BottomRight from "@/components/lobby/bottomRight";
 const MainLobbyPage = () => {
   return (
     <>
-      <div>
-        <div>
+      <div className="game-wrapper">
+        <div className="h-screen grid grid-cols-12 grid-rows-12 gap-4">
           {/* Top Left - User Profile */}
           <TopLeft />
 

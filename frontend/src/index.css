@@ -32,6 +32,16 @@
   .dark .game-wrapper {
     @apply from-slate-950 via-slate-900 to-slate-950 text-slate-100;
   }
+
+  .game-panel {
+    @apply col-span-3 row-span-2 p-4 backdrop-blur-md border;
+
+    @apply bg-white/50 border-slate-300/50 shadow-sm;
+  }
+
+  .dark .game-panel {
+    @apply bg-slate-900/40 border-slate-700/50 shadow-none;
+  }
 }
 
 :root {
