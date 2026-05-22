@@ -2,6 +2,8 @@
 import { Settings, Trophy, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useThemeStore } from "@/stores/useThemeStore";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +12,22 @@ import {
 } from "../ui.figma/dropdown-menu";
 
 export default function TopRight() {
+  const navigate = useNavigate();
+
   const { isDark, toggleTheme } = useThemeStore();
+
+  const { signOut } = useAuthStore();
+
+  const handleSignOut = async () => {
+    try {
+      const isSuccess = await signOut();
+      if (isSuccess) {
+        navigate("/signin");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đăng xuất:", error);
+    }
+  };
 
   return (
     <>
@@ -27,9 +44,9 @@ export default function TopRight() {
 
         <div className="h-full flex flex-col">
           {/* Model dark/light */}
-          <Button 
-          className="h-1/2 aspect-square flex-1 px-3"
-          onClick ={toggleTheme}
+          <Button
+            className="h-1/2 aspect-square flex-1 px-3"
+            onClick={toggleTheme}
           >
             {isDark ? (
               <Sun className="scale-150" />
@@ -51,13 +68,15 @@ export default function TopRight() {
 
             <DropdownMenuContent className="">
               <DropdownMenuItem className="cursor-pointer">
-                Logout
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
-                Sound
-              </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer">
                 Change Info
+              </DropdownMenuItem>
+
+              {/* Logout */}
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={handleSignOut}
+              >
+                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
