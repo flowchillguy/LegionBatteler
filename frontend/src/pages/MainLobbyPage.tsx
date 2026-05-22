@@ -21,45 +21,46 @@ const MainLobbyPage = () => {
           </Card>
 
           {/* Top Center - Resources & Mini Chat */}
-          <Card>
+          <Card className="col-span-6 row-span-2 game-panel">
             <TopCenter />
           </Card>
 
           {/* Top Right - Leaderboard Button & Settings */}
-          <Card>
+          <Card className="col-span-3 row-span-2 game-panel">
             <TopRight />
           </Card>
 
           {/* Left Middle - Friends List */}
-          <Card>
+          <Card className="col-span-3 row-span-6 game-panel">
             <MiddleLeft />
           </Card>
 
           {/* Center - Game Canvas Area */}
-          <Card>
+          <div className="col-span-6 row-span-6">
             <MiddleCenter />
-          </Card>
+          </div>
 
           {/* Right Middle - Unit Shop */}
-          <Card>
+          <Card className="col-span-3 row-span-6 game-panel">
             <MiddleRight />
           </Card>
 
           {/* Bottom Left - Global Chat */}
-          <Card>
+          <Card className="col-span-3 row-span-4 game-panel">
             <BottomLeft />
           </Card>
 
           {/* Bottom Center - Campaign & PVE Buttons */}
-          <Card>
+          <div className="col-span-6 row-span-4">
             <BottomCenter />
-          </Card>
+          </div>
 
           {/* Bottom Right - Rank (Matchmaking) Button */}
-          <Card>
+          <Card className="col-span-3 row-span-4 game-panel">
             <BottomRight />
           </Card>
         </div>
+        <footer>© Legion Batteler - Dang Dinh Hoang - 2026</footer>
       </div>
 
       <div><MainLobby/></div>
