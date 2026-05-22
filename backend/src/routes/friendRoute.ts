@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 
 import {
   sendFriendRequest,
@@ -9,7 +9,7 @@ import {
   getFriendRequests,
 } from "../controllers/friendController.js";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 router.post("/requests", sendFriendRequest);
 router.post("/requests/:requestId/accept", acceptFriendRequest);

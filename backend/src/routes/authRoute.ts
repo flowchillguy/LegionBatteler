@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import {
   signUp,
   signIn,
@@ -6,7 +6,7 @@ import {
   refresh,
 } from "../controllers/authController.js";
 
-const route = express.Router();
+const route: Router = express.Router();
 
 route.post("/signup", signUp);
 

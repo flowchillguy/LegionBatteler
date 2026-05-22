@@ -1,11 +1,5 @@
-import express from "express";
+import express, { Router } from "express";
 
-import { authMe, test } from "../controllers/usersController.js";
+const route: Router = express.Router();
 
-const router = express.Router();
-
-router.get("/me", authMe);
-
-router.get("/test", test);
-
-export default router;
+export default route;

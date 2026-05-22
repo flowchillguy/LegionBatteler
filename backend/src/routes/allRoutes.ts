@@ -4,8 +4,9 @@ import authRoute from "./authRoute.js";
 import userRoute from "./usersRoute.js";
 import friendRoute from "./friendRoute.js";
 import messageRoute from "./messageRoute.js";
+import { type Router } from "express";
 
-const router = express.Router();
+const router: Router = express.Router();
 
 // PUBLIC ROUTES
 router.use("/auth", authRoute);
