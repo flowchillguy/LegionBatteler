@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui.figma/card";
+import { Card } from "@/components/ui/card";
 import TopLeft from "@/components/lobby/topLeft";
 import TopCenter from "@/components/lobby/topCenter";
 import TopRight from "@/components/lobby/topRight";

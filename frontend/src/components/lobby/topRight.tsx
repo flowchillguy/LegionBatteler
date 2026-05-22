@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui.figma/dropdown-menu";
+} from "../ui/dropdown-menu";
 
 export default function TopRight() {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ export default function TopRight() {
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="">
+            <DropdownMenuContent className="scale-150">
               <DropdownMenuItem className="cursor-pointer">
                 Change Info
               </DropdownMenuItem>

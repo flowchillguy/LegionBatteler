@@ -1,14 +1,14 @@
-import { Card } from "@/components/ui.figma/card";
-import { Button } from "@/components/ui.figma/button";
-import { Input } from "@/components/ui.figma/input";
-import { ScrollArea } from "@/components/ui.figma/scroll-area";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui.figma/dropdown-menu";
-import { Badge } from "@/components/ui.figma/badge";
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import {
   Settings,
   Send,

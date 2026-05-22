@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useThemeStore } from "@/stores/useThemeStore";
-import React from "react";
 
 const TrialPage = () => {
   const { isDark, toggleTheme } = useThemeStore();
