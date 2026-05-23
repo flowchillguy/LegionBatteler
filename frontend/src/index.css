@@ -19,6 +19,25 @@
   }
   html {
     @apply font-mono;
+
+    /* Scrollbar */
+    @apply scroll-smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-slate-400) transparent;
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: var(--color-slate-100);
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--color-slate-400);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: var(--color-slate-500);
+    }
   }
 }
 
@@ -41,6 +60,18 @@
 
   .dark .game-panel {
     @apply bg-slate-900/40 border-slate-700/50 shadow-none;
+  }
+
+  .overlay-style {
+    @apply fixed inset-0 bg-black/40 z-1 flex justify-center items-center;
+  }
+
+  .glassmorphism {
+    @apply bg-slate-100/90;
+  }
+
+  .dark .glassmorphism {
+    @apply bg-slate-900/90;
   }
 }
 

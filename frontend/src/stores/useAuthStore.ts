@@ -125,6 +125,36 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false });
         }
       },
+
+      patchProfile: async (
+        bio: string,
+        displayName: string,
+        email: string,
+        password: string,
+        passwordComfirm: string,
+      ) => {
+        try {
+          set({ loading: true });
+          const { fetchMe } = get();
+          await authService.patchProfile(
+            bio,
+            displayName,
+            email,
+            password,
+            passwordComfirm,
+          );
+
+          await fetchMe();
+          toast.success("Cập nhập thành công!");
+          return true;
+        } catch (error) {
+          console.error(error);
+          toast.error("Cập nhập thất bại!");
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
     }),
     {
       name: "auth-storage",

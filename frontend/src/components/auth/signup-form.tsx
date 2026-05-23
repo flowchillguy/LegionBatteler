@@ -87,8 +87,9 @@ export function SignUpForm({
                   Điền đầy đủ thông tin bên dưới để tạo tài khoản
                 </p>
               </div>
+
+              {/* USERNAME */}
               <Field>
-                {/* USERNAME */}
                 <FieldLabel htmlFor="username">Tên Đăng Nhập</FieldLabel>
                 <Input
                   id="username"

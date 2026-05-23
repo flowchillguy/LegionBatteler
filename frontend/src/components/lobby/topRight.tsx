@@ -1,15 +1,16 @@
 // Leaderboard Button & Settings
-import { Settings, Trophy, Sun, Moon } from "lucide-react";
+import { Settings, Trophy, Sun, Moon, Info, LogOut } from "lucide-react";
+import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useNavigate } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useLobby } from "@/stores/useLobby";
 
 export default function TopRight() {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ export default function TopRight() {
       console.error("Lỗi khi đăng xuất:", error);
     }
   };
+
+  const { setIsInfoUserFormOpen } = useLobby();
 
   return (
     <>
@@ -67,8 +70,9 @@ export default function TopRight() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="scale-150">
-              <DropdownMenuItem className="cursor-pointer">
-                Change Info
+              <DropdownMenuItem className="cursor-pointer" onSelect={setIsInfoUserFormOpen}>
+                <Info />
+                Thông tin
               </DropdownMenuItem>
 
               {/* Logout */}
@@ -76,7 +80,8 @@ export default function TopRight() {
                 className="cursor-pointer"
                 onSelect={handleSignOut}
               >
-                Logout
+                <LogOut />
+                Đăng xuất
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

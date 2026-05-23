@@ -41,4 +41,26 @@ export const authService = {
     console.log(res.data);
     return res.data.accessToken;
   },
+
+  patchProfile: async (
+    bio: string,
+    displayName: string,
+    email: string,
+    password: string,
+    passwordComfirm: string,
+  ) => {
+    const res = await api.patch(
+      "/users/me",
+      {
+        bio,
+        displayName,
+        email,
+        password,
+        passwordComfirm,
+      },
+      { withCredentials: true },
+    );
+
+    return res.data;
+  },
 };

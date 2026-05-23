@@ -8,9 +8,13 @@ import MiddleRight from "@/components/lobby/middleRight";
 import BottomLeft from "@/components/lobby/bottomLeft";
 import BottomCenter from "@/components/lobby/bottomCenter";
 import BottomRight from "@/components/lobby/bottomRight";
-import MainLobby from "@/components/lobby/mainLobby.tsx"
+import MainLobby from "@/components/lobby/mainLobby.tsx";
+import InfoUserForm from "@/components/lobby/infoUserForm";
+import { useLobby } from "@/stores/useLobby";
 
 const MainLobbyPage = () => {
+  const { isInfoUserFormOpen, setIsInfoUserFormOpen } = useLobby();
+
   return (
     <>
       <div className="game-wrapper">
@@ -61,9 +65,18 @@ const MainLobbyPage = () => {
           </Card>
         </div>
         <footer>© Legion Batteler - Dang Dinh Hoang - 2026</footer>
+
+        {isInfoUserFormOpen && (
+          <div className="overlay-style" onClick={setIsInfoUserFormOpen}>
+            {/* Form thông tin người dùng */}
+            <InfoUserForm />
+          </div>
+        )}
       </div>
 
-      <div><MainLobby/></div>
+      <div>
+        <MainLobby />
+      </div>
     </>
   );
 };

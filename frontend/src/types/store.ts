@@ -24,6 +24,13 @@ export interface AuthState {
   signOut: () => Promise<boolean>;
   fetchMe: () => Promise<void>;
   refresh: () => Promise<void>;
+  patchProfile: (
+    bio: string,
+    displayName: string,
+    email: string,
+    password: string,
+    passwordComfirm: string,
+  ) => Promise<boolean>;
 }
 
 export interface ThameState {
