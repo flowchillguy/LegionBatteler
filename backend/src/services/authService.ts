@@ -43,6 +43,10 @@ export const createAccount = async (data: SignUpData) => {
   const duplicate = await User.findOne({ username });
   if (duplicate) throw new Error("LỖI USER ĐÃ TỒN TẠI!");
 
+  // Kiểm tra trùng email
+  const duplicateEmail = await User.findOne({ email });
+  if (duplicateEmail) throw new Error("Lỗi Email đã tồn tại!");
+
   // Khớp password với cofirmPassword
   if (password !== confirmPassword) {
     throw new Error("LỖI MẬT KHẨU XÁC NHẬN KHÔNG ĐÚNG!");

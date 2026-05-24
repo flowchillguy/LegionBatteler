@@ -24,8 +24,11 @@ import { Input } from "@/components/ui/input";
 
 const infoUserFormSchema = z.object({
   displayName: z.string().min(1, "Tên hiển thị không thể thiếu!"),
-  email: z.email("Email không hợp lệ!"),
-  password: z.string().min(6, "Mật khẩu phải có ít nhất 6 ký tự!"),
+  email: z.string().email("Email không hợp lệ!"),
+  password: z
+    .string()
+    .min(6, "Mật khẩu phải có ít nhất 6 ký tự!")
+    .or(z.literal("")),
   bio: z.string().max(500, "Tối đa 500 ký tự!"),
   passwordComfirm: z.string().min(6, "Vui lòng nhập mật khẩu"),
 });
@@ -52,7 +55,6 @@ export default function InfoUserForm() {
     await patchProfile(bio, displayName, email, password, passwordComfirm);
 
     infoUserForm.reset();
-    console.log(data);
   };
 
   return (
@@ -64,8 +66,8 @@ export default function InfoUserForm() {
         <CardHeader>
           <CardTitle>Thông tin cá nhân</CardTitle>
           <CardDescription>
-            Bạn có thể thay đổi thông tin bất cứ khi nào bạn muốn. Nhưng không
-            thể đổi username
+            Bạn có thể thay đổi thông tin bất cứ khi nào bạn muốn. Hãy cân nhắc
+            kĩ trước khi đổi thông tin.
           </CardDescription>
         </CardHeader>
 
@@ -78,7 +80,10 @@ export default function InfoUserForm() {
               <FieldGroup>
                 {/* username */}
                 <Field className="flex flex-row">
-                  <FieldLabel>Tên đăng nhập</FieldLabel>
+                  <div>
+                    <FieldLabel>Tên đăng nhập</FieldLabel>
+                    <FieldDescription>Không thể thay đổi</FieldDescription>
+                  </div>
                   <p>
                     {user?.username} - id: {user?._id.slice(0, 3)}
                   </p>
@@ -86,7 +91,12 @@ export default function InfoUserForm() {
 
                 {/* Display name */}
                 <Field className="flex flex-row">
-                  <FieldLabel htmlFor="displayName">Tên hiển thị</FieldLabel>
+                  <div>
+                    <FieldLabel htmlFor="displayName">Tên hiển thị</FieldLabel>
+                    <FieldDescription>
+                      Để nguyên nếu không đổi tên
+                    </FieldDescription>
+                  </div>
                   <div>
                     <Input
                       id="displayName"
@@ -103,7 +113,12 @@ export default function InfoUserForm() {
                 </Field>
                 {/* Email */}
                 <Field className="flex flex-row">
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <div>
+                    <FieldLabel htmlFor="email">Email</FieldLabel>
+                    <FieldDescription>
+                      Để nguyên nếu không đổi email và đảm bảo email là duy nhất
+                    </FieldDescription>
+                  </div>
                   <div>
                     <Input
                       id="email"
@@ -121,7 +136,12 @@ export default function InfoUserForm() {
 
                 {/* Pass word */}
                 <Field className="flex flex-row">
-                  <FieldLabel htmlFor="password">Mật khẩu mới</FieldLabel>
+                  <div>
+                    <FieldLabel htmlFor="password">Mật khẩu mới</FieldLabel>
+                    <FieldDescription>
+                      Bỏ qua nếu không đổi mật khẩu
+                    </FieldDescription>
+                  </div>
                   <div>
                     <Input
                       id="password"
@@ -139,7 +159,12 @@ export default function InfoUserForm() {
 
                 {/* Bio */}
                 <Field className="flex flex-row">
-                  <FieldLabel htmlFor="bio">Mô tả về bạn</FieldLabel>
+                  <div>
+                    <FieldLabel htmlFor="bio">Bio</FieldLabel>
+                    <FieldDescription>
+                      Có thể bỏ qua và giới hạn 500 ký tự
+                    </FieldDescription>
+                  </div>
                   <div>
                     <Input
                       id="bio"

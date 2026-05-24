@@ -2,8 +2,8 @@ import type { CustomRequest } from "../models/CustomRequest.js";
 import type { NextFunction, Response } from "express";
 import { AppError } from "../errors/AppError.js";
 
-export const controllerHandler = (
-  controllerFunction: (req: CustomRequest, res: Response) => Promise<Response>,
+export const controllerHandler = <T>(
+  controllerFunction: (req: CustomRequest, res: Response) => Promise<T>,
   statusCode = 200,
 ) => {
   return async (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -14,6 +14,7 @@ export const controllerHandler = (
       }
     } catch (error: any) {
       if (error instanceof AppError) {
+        console.error("==>> Lỗi người dùng:", error);
         return res.status(error.statusCode).json({ message: error.message });
       }
       console.error("==>> Lỗi hệ thống:", error);

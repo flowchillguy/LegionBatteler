@@ -147,9 +147,12 @@ export const useAuthStore = create<AuthState>()(
           await fetchMe();
           toast.success("Cập nhập thành công!");
           return true;
-        } catch (error) {
-          console.error(error);
-          toast.error("Cập nhập thất bại!");
+        } catch (error: any) {
+          const errorMessage =
+            error.response?.data?.message ||
+            "Cập nhật thất bại, vui lòng thử lại!";
+          toast.error(errorMessage);
+
           return false;
         } finally {
           set({ loading: false });
