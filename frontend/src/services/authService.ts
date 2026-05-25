@@ -62,4 +62,14 @@ export const authService = {
 
     return res.data;
   },
+
+  getPassword: async (username: string) => {
+    const res = await api.post(
+      "/helper/password/",
+      { username },
+      { withCredentials: true },
+    );
+
+    return res.data
+  },
 };

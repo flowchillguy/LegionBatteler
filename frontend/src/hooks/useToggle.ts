@@ -8,5 +8,5 @@ export default function useToggle(initialValue = false) {
     setValue((prev) => !prev);
   };
 
-  return [value, toggle];
+  return [value, toggle] as const;
 }

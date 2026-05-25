@@ -20,7 +20,6 @@ export interface AuthState {
   ) => Promise<boolean>;
 
   signIn: (username: string, password: string) => Promise<boolean>;
-
   signOut: () => Promise<boolean>;
   fetchMe: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -31,6 +30,7 @@ export interface AuthState {
     password: string,
     passwordComfirm: string,
   ) => Promise<boolean>;
+  getPassword: (username: string) => Promise<any>;
 }
 
 export interface ThameState {

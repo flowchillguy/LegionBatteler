@@ -16,6 +16,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router";
+import ForgotPassword from "@/components/auth/ForgotPassword";
+import useToggle from "@/hooks/useToggle";
 
 const signInSchema = z.object({
   username: z
@@ -57,6 +59,8 @@ export function SignInForm({
       navigate("/");
     }
   };
+
+  const [isOpenForgotPassword, toggleisOpenForgotPassword] = useToggle();
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -123,6 +127,13 @@ export function SignInForm({
                 </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card"></FieldSeparator>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={toggleisOpenForgotPassword}
+              >
+                Quên mật khẩu?
+              </Button>
               <FieldDescription className="text-center">
                 Bạn chưa có tài khoản? <a href="/signup">Đăng kí</a>
                 <br />
@@ -143,6 +154,13 @@ export function SignInForm({
         Bằng cách tiếp tục, bạn đồng ý với <a href="#">Điều khoản dịch vụ</a> và{" "}
         <a href="#">Chính sách bảo mật</a> của chúng tôi.
       </FieldDescription>
+
+      {/* Quên mật khẩu */}
+      {isOpenForgotPassword && (
+        <div className="overlay-style" onClick={toggleisOpenForgotPassword}>
+          <ForgotPassword />
+        </div>
+      )}
     </div>
   );
 }

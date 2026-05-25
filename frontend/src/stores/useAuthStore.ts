@@ -158,6 +158,25 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false });
         }
       },
+
+      getPassword: async (username: string) => {
+        try {
+          set({ loading: true });
+          const { message, maskingEmail } =
+            await authService.getPassword(username);
+          if (message) {
+            toast.success(message);
+          }
+          return maskingEmail;
+        } catch (error: any) {
+          const errorMessage =
+            error.response?.data?.message ||
+            "Yêu cầu thất bại, vui lòng thử lại!";
+          toast.error(errorMessage);
+        } finally {
+          set({ loading: false });
+        }
+      },
     }),
     {
       name: "auth-storage",
