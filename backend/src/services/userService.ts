@@ -67,6 +67,5 @@ export const patchProfile = async (
   );
 
   // Return
-  console.log(userUpdate);
   return userUpdate;
 };

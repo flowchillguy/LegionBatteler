@@ -21,7 +21,7 @@ export const protectedRoute = (
     const token = authHeader?.split(" ")[1]; // Bearer <Token>
 
     if (!token) {
-      return res.status(401).json({ message: "Không tìm thấy access token" });
+      return res.status(401).json({ message: "Yêu cầu cần đăng nhập để thực hiện!" });
     }
 
     // Xác minh access token có hợp lệ không?

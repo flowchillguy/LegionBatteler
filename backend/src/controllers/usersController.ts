@@ -14,13 +14,6 @@ export const authMe = async (req: CustomRequest, res: Response) => {
   }
 };
 
-export const updatePdrofile = async (req: CustomRequest, res: Response) => {
-  try {
-    const userId = req.user._id;
-    const { bio, displayName, email, password, passwordComfirm } = req.body;
-  } catch (error) {}
-};
-
 export const updateProfile = controllerHandler(
   async (req: CustomRequest, res: Response) => {
     const userId = req.user._id;
