@@ -10,6 +10,7 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       user: null,
       loading: false,
+      friends: null,
 
       setAccessToken: (accessToken) => {
         set({ accessToken });
@@ -65,6 +66,7 @@ export const useAuthStore = create<AuthState>()(
           const { accessToken } = await authService.signIp(username, password);
           get().setAccessToken(accessToken);
           await get().fetchMe();
+          await get().getFriendList();
 
           toast.success("Đăng nhập thành công!");
           return true;
@@ -172,6 +174,21 @@ export const useAuthStore = create<AuthState>()(
           const errorMessage =
             error.response?.data?.message ||
             "Yêu cầu thất bại, vui lòng thử lại!";
+          toast.error(errorMessage);
+        } finally {
+          set({ loading: false });
+        }
+      },
+
+      getFriendList: async () => {
+        try {
+          set({ loading: true });
+          const friends = await authService.getFriendList();
+          set({ friends });
+        } catch (error: any) {
+          const errorMessage =
+            error.response?.data?.message ||
+            "Lấy danh sách kết bạn thất bại, vui lòng thử lại!";
           toast.error(errorMessage);
         } finally {
           set({ loading: false });

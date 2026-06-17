@@ -70,6 +70,12 @@ export const authService = {
       { withCredentials: true },
     );
 
-    return res.data
+    return res.data;
+  },
+
+  getFriendList: async () => {
+    const res = await api.get("/friends/", { withCredentials: true });
+
+    return res.data.friends;
   },
 };

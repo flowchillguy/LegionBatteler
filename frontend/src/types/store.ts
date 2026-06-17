@@ -5,6 +5,7 @@ export interface AuthState {
   accessToken: string | null;
   user: User | null;
   loading: boolean;
+  friends: any;
 
   setAccessToken: (accessToken: string) => void;
 
@@ -31,6 +32,7 @@ export interface AuthState {
     passwordComfirm: string,
   ) => Promise<boolean>;
   getPassword: (username: string) => Promise<any>;
+  getFriendList: () => Promise<void>;
 }
 
 export interface ThameState {
