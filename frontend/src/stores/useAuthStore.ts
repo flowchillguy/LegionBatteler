@@ -21,6 +21,7 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           user: null,
           loading: false,
+          friends: null,
         });
 
         localStorage.clear();
@@ -119,6 +120,8 @@ export const useAuthStore = create<AuthState>()(
           if (!user) {
             await fetchMe();
           }
+
+          await get().getFriendList();
         } catch (error) {
           console.error(error);
           get().clearState;
@@ -197,7 +200,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
-      partialize: (state) => ({ user: state.user }), // Chỉ persist user (token, loading sẽ không lưu)
+      partialize: (state) => ({ user: state.user, friends: state.friends }), // Chỉ persist user (token, loading sẽ không lưu)
     },
   ),
 );

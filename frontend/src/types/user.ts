@@ -12,6 +12,7 @@ export interface Friend {
   _id: string;
   username: string;
   displayName: string;
+  friendshipId: string;
 }
 
 export interface FriendRequest {

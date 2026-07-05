@@ -109,8 +109,10 @@ export const deleteFriendship = async (friendshipId: any, userId: string) => {
     _id: friendshipId,
     $or: [{ userA: userId }, { userB: userId }],
   });
-  if(!deleteFriend) {
-    throw new Error("Lỗi! Không có dữ liệu bạn bè hoặc bạn không có quyền xóa!")
+  if (!deleteFriend) {
+    throw new Error(
+      "Lỗi! Không có dữ liệu bạn bè hoặc bạn không có quyền xóa!",
+    );
   }
 };
 
@@ -118,8 +120,8 @@ export const fetchUserFriends = async (userId: string) => {
   const friendships = await Friend.find({
     $or: [{ userA: userId }, { userB: userId }],
   })
-    .populate("userA", "_id displayName")
-    .populate("userB", "_id displayName")
+    .populate("userA", "_id displayName username")
+    .populate("userB", "_id displayName username")
     .lean();
 
   if (!friendships.length) {
