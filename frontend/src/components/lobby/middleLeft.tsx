@@ -6,12 +6,38 @@ import { ScrollArea } from "../ui/scroll-area";
 import { Card } from "../ui/card";
 import type { Friend } from "@/types/user";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { friendService } from "@/services/friendService";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function MiddleLeft() {
   const { friends } = useAuthStore();
 
-  const handleSubmit = (username: string) => {
-    //
+  const [username, setUsername] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (
+    e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>,
+  ) => {
+    e.preventDefault();
+
+    if (!username.trim()) {
+      toast.error("Vui lòng nhập username!");
+      return;
+    }
+
+    try {
+      await friendService.sendFriendRequest(username, message);
+      toast.success("Gửi lời mời thành công!");
+
+      setUsername("");
+      setMessage("");
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message ||
+        "Gửi lời mời thất bại, vui lòng thử lại!";
+      toast.error(errorMessage);
+    }
   };
   return (
     <>
@@ -40,14 +66,31 @@ export default function MiddleLeft() {
 
         {/* friend-request */}
         <TabsContent value="friend-request">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Nhập username bạn bè"
-              className="border p-2 rounded"
-            />
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-raw gap-1"
+          >
+            <div className="flex flex-col gap-1">
+              <input
+                type="text"
+                placeholder="Nhập username bạn bè"
+                className="border p-0 rounded"
+                value={username}
+                // 3. Lắng nghe sự kiện thay đổi để cập nhật State
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              <input
+                type="text"
+                placeholder="Ghi lại lời nhắn..."
+                className="border p-0 rounded"
+                value={message}
+                // 3. Lắng nghe sự kiện thay đổi để cập nhật State
+                onChange={(e) => setMessage(e.target.value)}
+              />
+            </div>
             <Button variant="ghost" type="submit">
-              <UserPlus className="w-4 h-4 text-lime-400" />
+              <UserPlus className="w-4 h-4 text-lime-400 scale-200" />
             </Button>
           </form>
         </TabsContent>

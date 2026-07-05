@@ -4,17 +4,18 @@ import User from "../models/User.js";
 
 export const createFriendRequest = async (
   from: string,
-  to: string,
+  usernameTo: string,
   message: string,
 ) => {
-  if (from === to) {
-    throw new Error("Lỗi tự gửi yêu cầu kết bạn cho chính mình!");
-  }
-
-  const userExists = await User.exists({ _id: to });
+  const userExists = await User.findOne({ username: usernameTo });
 
   if (!userExists) {
     throw new Error("Lỗi! Người dùng không tồn tại!");
+  }
+
+  const to = userExists._id;
+  if (from === to) {
+    throw new Error("Lỗi tự gửi yêu cầu kết bạn cho chính mình!");
   }
 
   let userA = from.toString();
