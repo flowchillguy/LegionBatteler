@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import swaggerUi from "swagger-ui-express";
 import fs from "node:fs";
 import path from "node:path";
+import { createServer } from "http";
+import { initSocket } from "./config/socket.js";
 
 //Cấu hình đọc file env
 dotenv.config();
@@ -37,6 +39,10 @@ const swaggerDocument = JSON.parse(
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api", apiRoutes);
+
+// Kích hoạt Socket.io
+const server = createServer(app);
+initSocket(server);
 
 connectDB().then(() => {
   app.listen(PORT, () => {
