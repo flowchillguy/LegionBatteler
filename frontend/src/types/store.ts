@@ -1,11 +1,10 @@
 import type { Message } from "./chat";
-import type { User } from "./user";
+import type { Friend, FriendRequest, User } from "./user";
 
 export interface AuthState {
   accessToken: string | null;
   user: User | null;
   loading: boolean;
-  friends: any;
 
   setAccessToken: (accessToken: string) => void;
 
@@ -32,7 +31,6 @@ export interface AuthState {
     passwordComfirm: string,
   ) => Promise<boolean>;
   getPassword: (username: string) => Promise<any>;
-  getFriendList: () => Promise<void>;
 }
 
 export interface ThameState {
@@ -49,4 +47,17 @@ export interface GeneralChatState {
   };
   loading: boolean;
   reset: () => void;
+}
+
+export interface FriendState {
+  friends: Friend[];
+  sentFriendRequest: FriendRequest[];
+  receivedFriendRequest: FriendRequest[];
+
+  getAllFriends: () => Promise<void>;
+  sendFriendRequest: (username: string, message: string) => Promise<void>;
+  getFriendRequests: () => Promise<void>;
+  acceptFriendRequest: (idFriend: string) => Promise<void>;
+  declineFriendRequest: (idFriend: string) => Promise<void>;
+  unfriend: (friendshipId: string) => Promise<void>;
 }

@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { authService } from "@/services/authService";
 import type { AuthState } from "@/types/store";
 import { persist } from "zustand/middleware";
+import { useFriendStore } from "./useFriendStore";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -10,7 +11,6 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       user: null,
       loading: false,
-      friends: null,
 
       setAccessToken: (accessToken) => {
         set({ accessToken });
@@ -21,7 +21,12 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           user: null,
           loading: false,
-          friends: null,
+        });
+
+        useFriendStore.setState({
+          friends: [],
+          sentFriendRequest: [],
+          receivedFriendRequest: [],
         });
 
         localStorage.clear();
@@ -67,7 +72,8 @@ export const useAuthStore = create<AuthState>()(
           const { accessToken } = await authService.signIp(username, password);
           get().setAccessToken(accessToken);
           await get().fetchMe();
-          await get().getFriendList();
+          await useFriendStore.getState().getAllFriends();
+          await useFriendStore.getState().getFriendRequests();
 
           toast.success("Đăng nhập thành công!");
           return true;
@@ -98,6 +104,8 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ loading: true });
           const user = await authService.fetchMe();
+          await useFriendStore.getState().getAllFriends();
+          await useFriendStore.getState().getFriendRequests();
 
           set({ user });
         } catch (error) {
@@ -120,8 +128,6 @@ export const useAuthStore = create<AuthState>()(
           if (!user) {
             await fetchMe();
           }
-
-          await get().getFriendList();
         } catch (error) {
           console.error(error);
           get().clearState;
@@ -182,25 +188,10 @@ export const useAuthStore = create<AuthState>()(
           set({ loading: false });
         }
       },
-
-      getFriendList: async () => {
-        try {
-          set({ loading: true });
-          const friends = await authService.getFriendList();
-          set({ friends });
-        } catch (error: any) {
-          const errorMessage =
-            error.response?.data?.message ||
-            "Lấy danh sách kết bạn thất bại, vui lòng thử lại!";
-          toast.error(errorMessage);
-        } finally {
-          set({ loading: false });
-        }
-      },
     }),
     {
       name: "auth-storage",
-      partialize: (state) => ({ user: state.user, friends: state.friends }), // Chỉ persist user (token, loading sẽ không lưu)
+      partialize: (state) => ({ user: state.user }), // Chỉ persist user (token, loading sẽ không lưu)
     },
   ),
 );
