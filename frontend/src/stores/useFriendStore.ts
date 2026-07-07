@@ -93,6 +93,7 @@ export const useFriendStore = create<FriendState>()(
             error.response?.data?.message ||
             "Hủy kết bạn thất bại, vui lòng thử lại!";
           toast.error(errorMessage);
+          console.log(error);
         }
       },
     }),

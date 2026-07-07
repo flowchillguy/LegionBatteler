@@ -13,8 +13,8 @@ export const createFriendRequest = async (
     throw new Error("Lỗi! Người dùng không tồn tại!");
   }
 
-  const to = userExists._id;
-  if (from === to) {
+  const to = String(userExists._id);
+  if (from.toString() === to) {
     throw new Error("Lỗi tự gửi yêu cầu kết bạn cho chính mình!");
   }
 

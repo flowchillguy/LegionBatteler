@@ -44,11 +44,9 @@ export const friendService = {
   },
 
   unfriend: async (friendshipId: string) => {
-    const res = await api.post(
-      `friends/requests/${friendshipId}/unfriend`,
-      {},
-      { withCredentials: true },
-    );
+    const res = await api.delete(`friends/requests/${friendshipId}/unfriend`, {
+      withCredentials: true,
+    });
 
     return res.data;
   },

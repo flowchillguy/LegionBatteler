@@ -1,5 +1,5 @@
 // Friends List
-import { UserPlus } from "lucide-react";
+import { UserPlus, UserRoundCheck, UserX } from "lucide-react";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Card } from "../ui/card";
@@ -10,10 +10,13 @@ import { useState } from "react";
 
 export default function MiddleLeft() {
   const {
-    sendFriendRequest,
     sentFriendRequest,
     receivedFriendRequest,
     friends,
+    sendFriendRequest,
+    unfriend,
+    acceptFriendRequest,
+    declineFriendRequest,
   } = useFriendStore();
 
   const [username, setUsername] = useState("");
@@ -30,6 +33,22 @@ export default function MiddleLeft() {
     setUsername("");
     setMessage("");
   };
+
+  // xóa bạn bè
+  const handleDeleteFriend = async (friendshipId: string) => {
+    await unfriend(friendshipId);
+  };
+
+  // Đồng ý kết bạn
+  const handleAcceptFriendRequest = async (reqID: string) => {
+    await acceptFriendRequest(reqID);
+  };
+
+  // Từ chối kết bạn
+  const handleDeclineFriendRequest = async (reqID: string) => {
+    await declineFriendRequest(reqID);
+  };
+
   return (
     <>
       <Tabs defaultValue="friend-list" className="flex flex-col h-full">
@@ -40,15 +59,23 @@ export default function MiddleLeft() {
 
         {/* friend-list */}
         <TabsContent value="friend-list">
-          <ScrollArea className="flex-1 h-[100px]">
+          <ScrollArea className="flex-1 h-[250px]">
             <div className="space-y-2 pr-4">
               {friends.map((friend: Friend) => (
                 <Card
                   key={friend._id}
-                  className="flex items-center justify-center p-0 rounded card-friend transition-colors cursor-pointer gap-0"
+                  className="flex justify-around items-center flex-row p-0 rounded card-friend transition-colors cursor-pointer gap-0"
                 >
-                  <span className="text-lg">{friend.displayName}</span>
-                  <span className="text-sm">{friend.username}</span>
+                  <div className="flex flex-col items-center justify-center">
+                    <span className="text-lg">{friend.displayName}</span>
+                    <span className="text-sm">@{friend.username}</span>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDeleteFriend(friend.friendshipId)}
+                  >
+                    <UserX />
+                  </Button>
                 </Card>
               ))}
             </div>
@@ -91,20 +118,37 @@ export default function MiddleLeft() {
             {receivedFriendRequest.map((friend: any) => (
               <Card
                 key={friend._id}
-                className="flex items-center justify-center p-0 rounded card-friend transition-colors cursor-pointer gap-0"
+                className="flex justify-around items-center flex-row p-0 rounded card-friend transition-colors cursor-pointer gap-0"
               >
-                <span className="text-lg">{friend.from.displayName}</span>
-                <span className="text-sm">{friend.from.username}</span>
+                <div className="flex flex-col items-center justify-center">
+                  <span className="text-lg">{friend.from.displayName}</span>
+                  <span className="text-sm">@{friend.from.username}</span>
+                </div>
+
+                <div className="flex gap-1">
+                  <Button
+                    variant="default"
+                    onClick={() => handleAcceptFriendRequest(friend._id)}
+                  >
+                    <UserRoundCheck />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => handleDeclineFriendRequest(friend._id)}
+                  >
+                    <UserX />
+                  </Button>
+                </div>
               </Card>
             ))}
             <h4>Yêu cầu kết bạn đã đã gửi</h4>
-            {sentFriendRequest.map((friend: FriendRequest) => (
+            {sentFriendRequest.map((friend: any) => (
               <Card
                 key={friend.id}
                 className="flex items-center justify-center p-0 rounded card-friend transition-colors cursor-pointer gap-0"
               >
-                <span className="text-lg">{friend.displayName}</span>
-                <span className="text-sm">{friend.username}</span>
+                <span className="text-lg">{friend.to.displayName}</span>
+                <span className="text-sm">@{friend.to.username}</span>
               </Card>
             ))}
           </div>
