@@ -38,18 +38,3 @@ export const getGeneralChat = async (req: CustomRequest, res: Response) => {
     });
   }
 };
-
-export const sendRoomChat = async (req: CustomRequest, res: Response) => {
-  try {
-    const { content } = req.body;
-    const senderId = req.user._id;
-
-    const message = await createNewMessageRoom(content, senderId);
-
-    return res.status(201).json({ message });
-  } catch (error: any) {
-    if ((error.message = "Lỗi thiếu nội dung")) {
-      res.status(400).json({ message: error.message });
-    }
-  }
-};

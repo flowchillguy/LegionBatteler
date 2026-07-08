@@ -1,5 +1,7 @@
 import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
+import { registerChatHandlers } from "../socket/chatHandler.js";
+import { registerMatchmakingHandlers } from "../socket/matchmakingHandler.js";
 
 let io: Server;
 
@@ -15,14 +17,13 @@ export const initSocket = (server: HttpServer): Server => {
   io.on("connection", (socket: Socket) => {
     console.log(`User connected: ${socket.id}`);
 
-    // Lắng nghe event từ client
-    socket.on("send_message", (data: { text: string }) => {
-      console.log("Data received:", data);
+    // Lắng nghe các event từ client
+    // chat tổng
+    registerChatHandlers(io, socket);
+    // ghép trận
+    registerMatchmakingHandlers(io, socket);
 
-      // Emit tới tất cả các client khác
-      io.emit("receive_message", data);
-    });
-
+    // Sự kiện ngắt kết nối
     socket.on("disconnect", () => {
       console.log(`User disconnected: ${socket.id}`);
     });

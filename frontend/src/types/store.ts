@@ -1,4 +1,3 @@
-import type { Message } from "./chat";
 import type { Friend, FriendRequest, User } from "./user";
 
 export interface AuthState {
@@ -39,6 +38,15 @@ export interface ThameState {
   setTheme: (dark: boolean) => void;
 }
 
+export interface Message {
+  _id: string;
+  senderId: string;
+  content: string | null;
+  updatedAt?: string | null;
+  createdAt: string;
+  isOwn?: boolean;
+}
+
 export interface GeneralChatState {
   messages: {
     items: Message[];
@@ -46,6 +54,8 @@ export interface GeneralChatState {
     nextCursor?: string | null; // Phân trang
   };
   loading: boolean;
+  getConversation: () => Promise<void>;
+  sendMessage: (message: string) => Promise<void>;
   reset: () => void;
 }
 

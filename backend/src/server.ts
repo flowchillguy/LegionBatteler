@@ -45,7 +45,7 @@ const server = createServer(app);
 initSocket(server);
 
 connectDB().then(() => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`==>> Server bắt đầu trên cổng ${PORT}!\n`);
   });
 });

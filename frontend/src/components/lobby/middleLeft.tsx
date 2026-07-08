@@ -3,7 +3,7 @@ import { UserPlus, UserRoundCheck, UserX } from "lucide-react";
 import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import { Card } from "../ui/card";
-import type { Friend, FriendRequest } from "@/types/user";
+import type { Friend } from "@/types/user";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFriendStore } from "@/stores/useFriendStore";
 import { useState } from "react";
