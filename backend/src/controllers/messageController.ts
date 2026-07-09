@@ -2,14 +2,13 @@ import type { Response } from "express";
 import type { CustomRequest } from "../models/CustomRequest.js";
 import {
   createNewMessageGeneral,
-  createNewMessageRoom,
   fetchGeneralChat,
 } from "../services/messageService.js";
 
 // Chat tổng
 export const sendGeneralChat = async (req: CustomRequest, res: Response) => {
   try {
-    const { content, guestName } = req.body;
+    const { content } = req.body;
     const senderId = req.user._id;
 
     const message = await createNewMessageGeneral(content, senderId);
@@ -25,7 +24,14 @@ export const sendGeneralChat = async (req: CustomRequest, res: Response) => {
 export const getGeneralChat = async (req: CustomRequest, res: Response) => {
   try {
     const { limitString, cursor } = req.query;
-    const limit = Number(limitString);
+    const limit = limitString ? Number(limitString) : 50;
+
+    if (isNaN(limit)) {
+      return res
+        .status(400)
+        .json({ message: "Tham số limit phải là một số hợp lệ!" });
+    }
+
     const { messages, nextCursor } = await fetchGeneralChat(limit, cursor);
     return res.status(200).json({
       messages,

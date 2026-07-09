@@ -23,7 +23,8 @@ export const fetchGeneralChat = async (limit = 50, cursor: any) => {
 
   let messages = await GeneralChat.find(query)
     .sort({ createdAt: -1 }) //Lấy tin mới nhất
-    .limit(limit + 1);
+    .limit(limit + 1)
+    .populate("senderId", "displayName username");
 
   let nextCursor = null;
   const messageLength = messages.length;
@@ -37,12 +38,4 @@ export const fetchGeneralChat = async (limit = 50, cursor: any) => {
   messages = messages.reverse();
 
   return { messages, nextCursor };
-};
-
-export const createNewMessageRoom = (content: string, senderId: string) => {
-  if (!content) {
-    throw new Error("Lỗi thiếu nội dung");
-  }
-
-  // Logic tạo tin nhắn mới trong ram/server
 };

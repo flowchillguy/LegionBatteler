@@ -5,7 +5,7 @@ import TopRight from "@/components/lobby/topRight";
 import MiddleLeft from "@/components/lobby/middleLeft";
 import MiddleCenter from "@/components/lobby/middleCenter";
 import MiddleRight from "@/components/lobby/middleRight";
-import BottomLeft from "@/components/lobby/bottomLeft";
+import GlobalChat from "@/components/lobby/globalChat";
 import BottomCenter from "@/components/lobby/bottomCenter";
 import BottomRight from "@/components/lobby/bottomRight";
 import MainLobby from "@/components/lobby/mainLobby.tsx";
@@ -46,12 +46,12 @@ const MainLobbyPage = () => {
 
           {/* Right Middle - Unit Shop */}
           <Card className="col-span-3 row-span-6 game-panel">
-            <MiddleRight />
+            <GlobalChat />
           </Card>
 
           {/* Bottom Left - Global Chat */}
           <Card className="col-span-3 row-span-4 game-panel">
-            <BottomLeft />
+            chưa code
           </Card>
 
           {/* Bottom Center - Campaign & PVE Buttons */}

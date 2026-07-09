@@ -54,9 +54,9 @@ export interface GeneralChatState {
     nextCursor?: string | null; // Phân trang
   };
   loading: boolean;
-  getConversation: () => Promise<void>;
+  getConversation: (hasMore: boolean, nexCursor?: string) => Promise<void>;
   sendMessage: (message: string) => Promise<void>;
-  reset: () => void;
+  initSocketListener: () => any
 }
 
 export interface FriendState {

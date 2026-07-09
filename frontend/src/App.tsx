@@ -7,6 +7,7 @@ import TrialPage from "./pages/TrialPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { useEffect } from "react";
+import { connectSocket, disconnectSocket } from "./services/socketService";
 
 function App() {
   // Chạy mặc định sáng tối
@@ -15,6 +16,16 @@ function App() {
   useEffect(() => {
     setTheme(isDark);
   }, [isDark]);
+
+  useEffect(() => {
+    // kết nối socket
+    connectSocket();
+
+    return () => {
+      // ngắt kết nối khi out
+      disconnectSocket();
+    };
+  }, []);
 
   return (
     <>
