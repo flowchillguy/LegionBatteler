@@ -58,7 +58,7 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
   // chat trong room
   socket.on("send_room_message", (data: { roomId: string; text: string }) => {
     io.to(data.roomId).emit("receive_room_message", {
-      senderId: socket.id,
+      sender: socket.data.user.displayName,
       text: data.text,
     });
   });

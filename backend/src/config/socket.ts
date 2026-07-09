@@ -2,8 +2,14 @@ import { Server as HttpServer } from "http";
 import { Server, Socket } from "socket.io";
 import { registerChatHandlers } from "../socket/chatHandler.js";
 import { registerMatchmakingHandlers } from "../socket/matchmakingHandler.js";
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 let io: Server;
+
+interface DecodedToken extends jwt.JwtPayload {
+  userId: string;
+}
 
 export const initSocket = (server: HttpServer): Server => {
   io = new Server(server, {
@@ -11,6 +17,37 @@ export const initSocket = (server: HttpServer): Server => {
       origin: "http://127.0.0.1:5173",
       methods: ["GET", "POST"],
     },
+  });
+
+  // Xác thực người dùng
+  io.use(async (socket: Socket, next) => {
+    try {
+      const accessToken = socket.handshake.auth.token;
+
+      if (!accessToken) {
+        return next(new Error("Không có quyền kết nối socket.io!"));
+      }
+
+      const decoded = jwt.verify(
+        accessToken,
+        process.env.ACCESS_TOKEN_SECRET as string,
+      ) as DecodedToken;
+
+      const user = await User.findById(decoded.userId).select(
+        "-hashedPassword",
+      );
+
+      if (!user) {
+        return next(new Error("Người dùng không tồn tại!"));
+      }
+
+      socket.data.user = user;
+
+      next();
+    } catch (error) {
+      console.error("Lỗi xác thực Socket JWT:", error);
+      return next(new Error("Access token hết hạn hoặc không đúng"));
+    }
   });
 
   // Quản lý các sự kiện kết nối
