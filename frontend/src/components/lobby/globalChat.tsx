@@ -14,56 +14,100 @@ export default function GlobalChat() {
     initSocketListener,
   } = useChatStore();
   const [text, setText] = useState("");
+  
+  // Ref mới để trỏ vào thẻ div bao bọc toàn bộ khung cuộn
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // State đánh dấu xem người dùng có đang vuốt lên xem tin cũ không
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
 
-  // Khởi tạo lấy tin nhắn và kết nối socket
   useEffect(() => {
     getConversation(messages.hasMore, messages.nextCursor || undefined);
 
-    // Gọi hàm lắng nghe socket ở đây để nhận tin nhắn mới
     if (initSocketListener) {
       initSocketListener();
     }
 
-    // Cleanup khi component unmount
     return () => {
       socket.off("receive_message");
     };
   }, []);
 
-  // Cuộn xuống cuối
+  // Effect tự động cuộn xuống cuối
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
+    // CHỈ tự động cuộn nếu người dùng ĐANG Ở ĐÁY màn hình
+    // Nếu họ đang vuốt lên xem tin cũ (isScrolledUp = true), ta mặc kệ để họ đọc
+    if (!isScrolledUp) {
+      messagesEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
   }, [messages.items]);
 
+  // Xử lý sự kiện gửi tin nhắn
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
 
     await sendMessage(text);
     setText("");
+    
+    // Ép buộc trượt xuống dưới cùng khi CHÍNH MÌNH vừa gửi tin nhắn mới
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 50);
+  };
+
+  // HÀM MỚI: Xử lý cuộn chuột đa nhiệm
+  const handleScroll = async (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const { scrollTop, scrollHeight, clientHeight } = container;
+
+    // 1. Kiểm tra xem có đang vuốt lên không (cách đáy hơn 150px)
+    const isNearBottom = scrollHeight - scrollTop - clientHeight <= 150;
+    setIsScrolledUp(!isNearBottom);
+
+    // 2. Kích hoạt lấy tin cũ khi cuộn chạm nóc (scrollTop === 0)
+    if (scrollTop === 0 && messages.hasMore && !loading) {
+      // Lưu lại chiều cao của khung chat TRƯỚC KHI có thêm tin nhắn cũ
+      const prevScrollHeight = scrollHeight;
+
+      // Đợi lấy tin cũ xong
+      await getConversation(messages.hasMore, messages.nextCursor || undefined);
+
+      // Tính toán lại để đẩy thanh cuộn xuống đúng vị trí người dùng đang đọc
+      // Dùng setTimeout nhỏ để đợi React render xong đống tin nhắn cũ vào DOM
+      setTimeout(() => {
+        if (chatContainerRef.current) {
+          const newScrollHeight = chatContainerRef.current.scrollHeight;
+          chatContainerRef.current.scrollTop = newScrollHeight - prevScrollHeight;
+        }
+      }, 50);
+    }
   };
 
   const currentUserId = useAuthStore.getState().user?._id;
 
   return (
     <div className="flex flex-col h-full max-h-[500px] w-full max-w-md bg-transparent border-border">
+      
       {/* Nơi đọc tin nhắn đến */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
-        {loading && messages.items.length === 0 && (
-          <div className="text-center text-sm text-muted-foreground py-2">
+      <div 
+        ref={chatContainerRef} // Gắn ref vào đây để tính toán chiều cao
+        onScroll={handleScroll} // Lắng nghe sự kiện cuộn
+        className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 relative"
+      >
+        {loading && (
+          <div className="text-center text-sm text-muted-foreground py-2 font-medium">
             Đang tải tin nhắn...
           </div>
         )}
 
         {messages.items.map((msg: any, index: number) => {
           const senderUserId = msg.senderId?._id || msg.senderId;
-
           const isMe = msg.isMe || senderUserId === currentUserId;
-
           const senderName = msg.senderId?.displayName || "Người dùng";
           const messageText = msg.content || "";
 

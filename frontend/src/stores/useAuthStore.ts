@@ -4,6 +4,7 @@ import { authService } from "@/services/authService";
 import type { AuthState } from "@/types/store";
 import { persist } from "zustand/middleware";
 import { useFriendStore } from "./useFriendStore";
+import { connectSocket, disconnectSocket } from "@/services/socketService";
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -69,11 +70,9 @@ export const useAuthStore = create<AuthState>()(
 
           localStorage.clear();
 
-          const { accessToken } = await authService.signIp(username, password);
+          const { accessToken } = await authService.signIn(username, password);
           get().setAccessToken(accessToken);
           await get().fetchMe();
-          await useFriendStore.getState().getAllFriends();
-          await useFriendStore.getState().getFriendRequests();
 
           toast.success("Đăng nhập thành công!");
           return true;
@@ -88,6 +87,8 @@ export const useAuthStore = create<AuthState>()(
 
       signOut: async () => {
         try {
+          disconnectSocket();
+
           get().clearState();
 
           await authService.signOut();
@@ -108,6 +109,7 @@ export const useAuthStore = create<AuthState>()(
           await useFriendStore.getState().getFriendRequests();
 
           set({ user });
+          connectSocket();
         } catch (error) {
           console.error(error);
           set({ user: null, accessToken: null });
@@ -125,9 +127,7 @@ export const useAuthStore = create<AuthState>()(
 
           setAccessToken(accessToken);
 
-          if (!user) {
-            await fetchMe();
-          }
+          await fetchMe();
         } catch (error) {
           console.error(error);
           get().clearState;

@@ -4,10 +4,8 @@ import TopCenter from "@/components/lobby/topCenter";
 import TopRight from "@/components/lobby/topRight";
 import MiddleLeft from "@/components/lobby/middleLeft";
 import MiddleCenter from "@/components/lobby/middleCenter";
-import MiddleRight from "@/components/lobby/middleRight";
 import GlobalChat from "@/components/lobby/globalChat";
 import BottomCenter from "@/components/lobby/bottomCenter";
-import BottomRight from "@/components/lobby/bottomRight";
 import MainLobby from "@/components/lobby/mainLobby.tsx";
 import InfoUserForm from "@/components/lobby/infoUserForm";
 import { useLobby } from "@/stores/useLobby";
@@ -35,7 +33,7 @@ const MainLobbyPage = () => {
           </Card>
 
           {/* Left Middle - Friends List */}
-          <Card className="col-span-3 row-span-6 game-panel">
+          <Card className="col-span-3 row-span-8 game-panel">
             <MiddleLeft />
           </Card>
 
@@ -45,24 +43,14 @@ const MainLobbyPage = () => {
           </div>
 
           {/* Right Middle - Unit Shop */}
-          <Card className="col-span-3 row-span-6 game-panel">
+          <Card className="col-span-3 row-span-8 game-panel">
             <GlobalChat />
-          </Card>
-
-          {/* Bottom Left - Global Chat */}
-          <Card className="col-span-3 row-span-4 game-panel">
-            chưa code
           </Card>
 
           {/* Bottom Center - Campaign & PVE Buttons */}
           <div className="col-span-6 row-span-4">
             <BottomCenter />
           </div>
-
-          {/* Bottom Right - Rank (Matchmaking) Button */}
-          <Card className="col-span-3 row-span-4 game-panel">
-            <BottomRight />
-          </Card>
         </div>
         <footer>© Legion Batteler - Dang Dinh Hoang - 2026</footer>
 
