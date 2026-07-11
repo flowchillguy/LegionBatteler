@@ -4,6 +4,10 @@ import { registerChatHandlers } from "../socket/chatHandler.js";
 import { registerMatchmakingHandlers } from "../socket/matchmakingHandler.js";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import {
+  initInGameCountInterval,
+  registerCounterHandlers,
+} from "../socket/presenceHandler.js";
 
 let io: Server;
 
@@ -54,11 +58,16 @@ export const initSocket = (server: HttpServer): Server => {
   io.on("connection", (socket: Socket) => {
     console.log(`User connected: ${socket.id}`);
 
+    // Đếm số người online
+    initInGameCountInterval(io);
+
     // Lắng nghe các event từ client
     // chat tổng
     registerChatHandlers(io, socket);
     // ghép trận
     registerMatchmakingHandlers(io, socket);
+    // Đếm số người in game
+    registerCounterHandlers(io, socket);
 
     // Sự kiện ngắt kết nối
     socket.on("disconnect", () => {

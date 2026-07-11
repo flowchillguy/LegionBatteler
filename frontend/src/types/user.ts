@@ -4,6 +4,11 @@ export interface User {
   email: string;
   displayName: string;
   bio?: string;
+  coin: number;
+  win: number;
+  loss: number;
+  totalMatches: number;
+  topPoints: number;
   createdAt?: string;
   updatedAt?: string;
 }

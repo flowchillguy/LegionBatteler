@@ -1,5 +1,5 @@
 // Leaderboard Button & Settings
-import { Settings, Trophy, Sun, Moon, Info, LogOut } from "lucide-react";
+import { Settings, Sun, Moon, Info, LogOut } from "lucide-react";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { useThemeStore } from "@/stores/useThemeStore";
@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { useLobby } from "@/stores/useLobby";
+import { useLobbyStore } from "@/stores/useLobbyStore";
 
 export default function TopRight() {
   const navigate = useNavigate();
@@ -30,20 +30,19 @@ export default function TopRight() {
     }
   };
 
-  const { setIsInfoUserFormOpen } = useLobby();
+  const { setIsInfoUserFormOpen, onlineUsers, inGameUser } = useLobbyStore();
 
   return (
     <>
       <div className="w-full h-full flex gap-2">
         {/* Leaderboard */}
-        <Button
-          variant="outline"
-          className="flex-1 h-full flex flex-col justify-center gap-1"
-        >
-          <Trophy className="w-6 h-6" />
-          <span className="text-lime-400">Rank #47</span>
-          <span className="text-xs text-slate-400">Leaderboard</span>
-        </Button>
+        <div className="flex-1 h-full flex flex-col items-center justify-center gap-1">
+          <h4>Tổng số người online</h4>
+          <span className="text-lime-400">{onlineUsers}</span>
+          <span className="text-xs text-slate-400">
+            Có {inGameUser} người đang trong trận
+          </span>
+        </div>
 
         <div className="h-full flex flex-col">
           {/* Model dark/light */}
@@ -70,7 +69,10 @@ export default function TopRight() {
             </DropdownMenuTrigger>
 
             <DropdownMenuContent className="scale-150">
-              <DropdownMenuItem className="cursor-pointer" onSelect={setIsInfoUserFormOpen}>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onSelect={setIsInfoUserFormOpen}
+              >
                 <Info />
                 Thông tin
               </DropdownMenuItem>

@@ -29,6 +29,27 @@ const userSchema = new mongoose.Schema(
       type: String,
       maxlength: 500,
     },
+    coin: {
+      type: Number,
+      default: 0,
+    },
+    win: {
+      type: Number,
+      default: 0,
+    },
+    loss: {
+      type: Number,
+      default: 0,
+    },
+    totalMatches: {
+      type: Number,
+      default: 0,
+    },
+    topPoints: {
+      type: Number,
+      default: 0,
+      index: true,
+    },
   },
   {
     timestamps: true,

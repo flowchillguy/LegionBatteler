@@ -122,7 +122,7 @@ export const useAuthStore = create<AuthState>()(
       refresh: async () => {
         try {
           set({ loading: true });
-          const { user, fetchMe, setAccessToken } = get();
+          const { fetchMe, setAccessToken } = get();
           const accessToken = await authService.refresh();
 
           setAccessToken(accessToken);

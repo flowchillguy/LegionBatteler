@@ -15,7 +15,7 @@ export const createNewMessageGeneral = async (
   return message;
 };
 
-export const fetchGeneralChat = async (limit = 50, cursor: any) => {
+export const fetchGeneralChat = async (limit = 10, cursor: any) => {
   const query: Record<string, any> = {};
   if (cursor) {
     query.createdAt = { $lt: new Date(cursor) };

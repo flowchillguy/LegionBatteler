@@ -125,7 +125,7 @@ export default function GlobalChat() {
               )}
 
               <p
-                className={`break-words whitespace-pre-wrap leading-relaxed rounded-xl px-3 py-2 ${
+                className={`break-words whitespace-pre-wrap max-w-full leading-relaxed rounded-xl px-3 py-2 ${
                   isMe
                     ? "bg-primary text-primary-foreground rounded-br-sm" 
                     : "bg-muted text-foreground rounded-bl-sm" 

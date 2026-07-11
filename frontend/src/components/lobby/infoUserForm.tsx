@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useLobby } from "@/stores/useLobby";
+import { useLobbyStore } from "@/stores/useLobbyStore";
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ type InfoUserFormValue = z.infer<typeof infoUserFormSchema>;
 
 export default function InfoUserForm() {
   const { user, patchProfile } = useAuthStore();
-  const { setIsInfoUserFormOpen } = useLobby();
+  const { setIsInfoUserFormOpen } = useLobbyStore();
 
   const infoUserForm = useForm<InfoUserFormValue>({
     resolver: zodResolver(infoUserFormSchema),

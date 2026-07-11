@@ -8,10 +8,10 @@ import GlobalChat from "@/components/lobby/globalChat";
 import BottomCenter from "@/components/lobby/bottomCenter";
 import MainLobby from "@/components/lobby/mainLobby.tsx";
 import InfoUserForm from "@/components/lobby/infoUserForm";
-import { useLobby } from "@/stores/useLobby";
+import { useLobbyStore } from "@/stores/useLobbyStore";
 
 const MainLobbyPage = () => {
-  const { isInfoUserFormOpen, setIsInfoUserFormOpen } = useLobby();
+  const { isInfoUserFormOpen, setIsInfoUserFormOpen } = useLobbyStore();
 
   return (
     <>

@@ -7,6 +7,7 @@ import TrialPage from "./pages/TrialPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { useEffect } from "react";
+import SocketListener from "./components/SocketListener";
 
 function App() {
   // Chạy mặc định sáng tối
@@ -20,6 +21,7 @@ function App() {
     <>
       {/* Đặt Toaster ở đầu với richColors giúp thông báo hiển thị trên tất cả các trang */}
       <Toaster richColors />
+      <SocketListener />
       <BrowserRouter>
         <Routes>
           {/* public routes */}
