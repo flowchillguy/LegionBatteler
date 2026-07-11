@@ -6,7 +6,6 @@ import MiddleLeft from "@/components/lobby/middleLeft";
 import MiddleCenter from "@/components/lobby/middleCenter";
 import GlobalChat from "@/components/lobby/globalChat";
 import BottomCenter from "@/components/lobby/bottomCenter";
-import MainLobby from "@/components/lobby/mainLobby.tsx";
 import InfoUserForm from "@/components/lobby/infoUserForm";
 import { useLobbyStore } from "@/stores/useLobbyStore";
 
@@ -15,8 +14,8 @@ const MainLobbyPage = () => {
 
   return (
     <>
-      <div className="game-wrapper">
-        <div className="h-screen grid grid-cols-12 grid-rows-12 gap-4">
+      <div className="h-screen game-wrapper">
+        <div className="h-full grid grid-cols-12 grid-rows-12 gap-4">
           {/* Top Left - User Profile */}
           <Card className="col-span-3 row-span-2 game-panel">
             <TopLeft />
@@ -33,26 +32,29 @@ const MainLobbyPage = () => {
           </Card>
 
           {/* Left Middle - Friends List */}
-          <Card className="col-span-3 row-span-8 game-panel">
+          <Card className="col-span-3 row-span-9 game-panel">
             <MiddleLeft />
           </Card>
 
           {/* Center - Game Canvas Area */}
-          <div className="col-span-6 row-span-6">
+          <div className="col-span-6 row-span-4">
             <MiddleCenter />
           </div>
 
-          {/* Right Middle - Unit Shop */}
-          <Card className="col-span-3 row-span-8 game-panel">
+          {/* Right Middle - Chat general */}
+          <Card className="col-span-3 row-span-9 game-panel">
             <GlobalChat />
           </Card>
 
-          {/* Bottom Center - Campaign & PVE Buttons */}
-          <div className="col-span-6 row-span-4">
+          {/* Campaign & PVE Buttons */}
+          <div className="col-span-6 row-span-5">
             <BottomCenter />
           </div>
+
+          <footer className="col-span-12 row-span-1">
+            © Legion Batteler - Dang Dinh Hoang - 2026
+          </footer>
         </div>
-        <footer>© Legion Batteler - Dang Dinh Hoang - 2026</footer>
 
         {isInfoUserFormOpen && (
           <div className="overlay-style" onClick={setIsInfoUserFormOpen}>
@@ -60,10 +62,6 @@ const MainLobbyPage = () => {
             <InfoUserForm />
           </div>
         )}
-      </div>
-
-      <div>
-        <MainLobby />
       </div>
     </>
   );

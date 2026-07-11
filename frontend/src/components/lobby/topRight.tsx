@@ -44,7 +44,7 @@ export default function TopRight() {
           </span>
         </div>
 
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col gap-2">
           {/* Model dark/light */}
           <Button
             className="h-1/2 aspect-square flex-1 px-3"
