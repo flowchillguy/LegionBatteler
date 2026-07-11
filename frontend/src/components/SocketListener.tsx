@@ -14,10 +14,12 @@ export default function SocketListener() {
     socket.on("status_in_game", ({ inGameCount }) => {
       setInGameUser(inGameCount);
     });
+
+    return () => {
+      socket.off("online_users");
+      socket.off("status_in_game");
+    };
   }, []);
 
-  return () => {
-    socket.off("online_users");
-    socket.off("status_in_game");
-  };
+  return null;
 }
