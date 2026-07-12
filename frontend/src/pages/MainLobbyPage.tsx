@@ -37,7 +37,7 @@ const MainLobbyPage = () => {
           </Card>
 
           {/* Center - Game Canvas Area */}
-          <div className="col-span-6 row-span-4">
+          <div className="col-span-6 row-span-2">
             <MiddleCenter />
           </div>
 
@@ -47,7 +47,7 @@ const MainLobbyPage = () => {
           </Card>
 
           {/* Campaign & PVE Buttons */}
-          <div className="col-span-6 row-span-5">
+          <div className="col-span-6 row-span-7">
             <BottomCenter />
           </div>
 

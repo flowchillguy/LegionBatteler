@@ -63,7 +63,7 @@ export default function MiddleLeft() {
             <div className="space-y-2 pr-4">
               {friends.map((friend: Friend) => (
                 <Card
-                  key={friend._id}
+                  key={friend.friendshipId}
                   className="flex justify-around items-center flex-row p-0 rounded card-friend transition-colors cursor-pointer gap-0"
                 >
                   <div className="flex flex-col items-center justify-center">
@@ -117,7 +117,7 @@ export default function MiddleLeft() {
             <h4>Yêu cầu kết bạn đã nhận</h4>
             {receivedFriendRequest.map((friend: any) => (
               <Card
-                key={friend._id}
+                key={friend.from._id}
                 className="flex justify-around items-center flex-row p-0 rounded card-friend transition-colors cursor-pointer gap-0"
               >
                 <div className="flex flex-col items-center justify-center">
@@ -144,7 +144,7 @@ export default function MiddleLeft() {
             <h4>Yêu cầu kết bạn đã đã gửi</h4>
             {sentFriendRequest.map((friend: any) => (
               <Card
-                key={friend.id}
+                key={friend.to._id}
                 className="flex items-center justify-center p-0 rounded card-friend transition-colors cursor-pointer gap-0"
               >
                 <span className="text-lg">{friend.to.displayName}</span>
