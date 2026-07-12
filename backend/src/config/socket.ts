@@ -11,6 +11,9 @@ import {
 
 let io: Server;
 
+// {userId: socketId}
+const userSocketMap: Record<string, string> = {};
+
 interface DecodedToken extends jwt.JwtPayload {
   userId: string;
 }
@@ -47,6 +50,8 @@ export const initSocket = (server: HttpServer): Server => {
 
       socket.data.user = user;
 
+      userSocketMap[user.id] = socket.id;
+
       next();
     } catch (error) {
       console.error("Lỗi xác thực Socket JWT:", error);
@@ -71,6 +76,7 @@ export const initSocket = (server: HttpServer): Server => {
 
     // Sự kiện ngắt kết nối
     socket.on("disconnect", () => {
+      delete userSocketMap[socket.data.user.id];
       console.log(`User disconnected: ${socket.id}`);
     });
   });
