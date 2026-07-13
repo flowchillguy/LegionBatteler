@@ -5,6 +5,8 @@ export const useLobbyStore = create<Lobby>()((set, get) => ({
   isInfoUserFormOpen: false,
   onlineUsers: 1,
   inGameUser: 0,
+  isMatchking: false,
+  room: { currentRoom: null, players: [] },
 
   setIsInfoUserFormOpen: () => {
     const newValue = !get().isInfoUserFormOpen;
@@ -18,5 +20,14 @@ export const useLobbyStore = create<Lobby>()((set, get) => ({
   setInGameUser: (inGameUser: number) => {
     set({ inGameUser });
   },
+
+  setIsMatchking: (isMatchking: boolean) => {
+    set({ isMatchking });
+  },
+
+  setRoom: (currentRoom = null, players = []) => {
+    set({
+      room: { currentRoom, players },
+    });
+  },
 }));
- 

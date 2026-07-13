@@ -4,7 +4,7 @@ import { getSocketId } from "../config/socket.js";
 interface CustomRoom {
   id: string;
   hostUsername: string;
-  players: string[];    // Lưu danh sách username (Max 2)
+  players: string[]; // Lưu danh sách username (Max 2)
 }
 
 const activeRooms: Record<string, CustomRoom> = {};
@@ -28,32 +28,36 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
   };
 
   // Hàm dọn dẹp khi user rời phòng
-const cleanRooms = (uname: string, io: Server) => {
-  const roomId = getUserCurrentRoomId(uname);
-  if (!roomId) return;
+  const cleanRooms = (uname: string, io: Server) => {
+    const roomId = getUserCurrentRoomId(uname);
+    if (!roomId) return;
 
-  const room = activeRooms[roomId]!;
+    const room = activeRooms[roomId]!;
 
-  // TRƯỜNG HỢP: Người rời phòng CHÍNH LÀ HOST
-  if (room.hostUsername === uname) {
-    console.log(`Chủ phòng ${uname} đã rời đi. Tiến hành hủy phòng ${roomId}.`);
-    
-    // Gửi event thông báo cho thành viên còn lại biết phòng đã bị hủy
-    io.to(roomId).emit("room_destroyed", { message: "Chủ phòng đã rời đi, phòng bị hủy!" });
-    
-    // Xóa phòng khỏi bộ nhớ hệ thống
-    delete activeRooms[roomId];
-    return;
-  }
+    // TRƯỜNG HỢP: Người rời phòng CHÍNH LÀ HOST
+    if (room.hostUsername === uname) {
+      console.log(
+        `Chủ phòng ${uname} đã rời đi. Tiến hành hủy phòng ${roomId}.`,
+      );
 
-  // TRƯỜNG HỢP: Người rời phòng là thành viên thường
-  room.players = room.players.filter((u) => u !== uname);
-  if (room.players.length <= 0) {
-    delete activeRooms[roomId];
-  } else {
-    io.to(roomId).emit("room_updated", { roomId, players: room.players });
-  }
-};
+      // Gửi event thông báo cho thành viên còn lại biết phòng đã bị hủy
+      io.to(roomId).emit("room_destroyed", {
+        message: "Chủ phòng đã rời đi, phòng bị hủy!",
+      });
+
+      // Xóa phòng khỏi bộ nhớ hệ thống
+      delete activeRooms[roomId];
+      return;
+    }
+
+    // TRƯỜNG HỢP: Người rời phòng là thành viên thường
+    room.players = room.players.filter((u) => u !== uname);
+    if (room.players.length <= 0) {
+      delete activeRooms[roomId];
+    } else {
+      io.to(roomId).emit("room_updated", { roomId, players: room.players });
+    }
+  };
 
   // --------------------------------------------------------
   // XỬ LÝ PHÒNG (ROOM HANDLERS)
@@ -62,11 +66,12 @@ const cleanRooms = (uname: string, io: Server) => {
   // 1. Tạo phòng
   socket.on("create_room", (callback) => {
     if (getUserCurrentRoomId(username)) {
-      if (callback) callback({ success: false, message: "Bạn đã ở trong một phòng khác!" });
+      if (callback)
+        callback({ success: false, message: "Bạn đã ở trong một phòng khác!" });
       return;
     }
 
-    const roomId = `room_${username}_${Date.now()}`; // ID unique
+    const roomId = `room_${username}`; // ID unique
 
     activeRooms[roomId] = {
       id: roomId,
@@ -83,16 +88,19 @@ const cleanRooms = (uname: string, io: Server) => {
   // 2. Tham gia phòng trực tiếp
   socket.on("join_room", ({ roomId }, callback) => {
     if (getUserCurrentRoomId(username)) {
-      if (callback) callback({ success: false, message: "Bạn đã ở trong một phòng khác!" });
+      if (callback)
+        callback({ success: false, message: "Bạn đã ở trong một phòng khác!" });
       return;
     }
 
     const room = activeRooms[roomId];
+
     if (!room) {
-      if (callback) callback({ success: false, message: "Phòng không tồn tại!" });
+      if (callback)
+        callback({ success: false, message: "Phòng không tồn tại!" });
       return;
-    } 
-    
+    }
+
     if (room.players.length >= 2) {
       if (callback) callback({ success: false, message: "Phòng đã đầy!" });
       return;
@@ -115,20 +123,26 @@ const cleanRooms = (uname: string, io: Server) => {
     const targetSocketId = getSocketId(invitedUsername);
 
     if (!room) {
-      if (callback) callback({ success: false, message: "Phòng không tồn tại!" });
+      if (callback)
+        callback({ success: false, message: "Phòng không tồn tại!" });
       return;
-    } 
+    }
     if (room.players.length >= 2) {
       if (callback) callback({ success: false, message: "Phòng đã đầy!" });
       return;
-    } 
+    }
     if (!targetSocketId) {
       if (callback) callback({ success: false, message: `User không online!` });
       return;
     }
 
-    io.to(targetSocketId).emit("receive_invite_room", { roomId, sender: username });
-    console.log(`User ${username} đã mời ${invitedUsername} vào phòng ${roomId}`);
+    io.to(targetSocketId).emit("receive_invite_room", {
+      roomId,
+      sender: username,
+    });
+    console.log(
+      `User ${username} đã mời ${invitedUsername} vào phòng ${roomId}`,
+    );
   });
 
   // 4. Rời phòng
@@ -155,16 +169,23 @@ const cleanRooms = (uname: string, io: Server) => {
 
       // Chỉ có host mới được quyền bấm ghép trận cho cả phòng
       if (room.hostUsername !== username) {
-        if (callback) callback({ success: false, message: "Chỉ chủ phòng mới được bắt đầu!" });
+        if (callback)
+          callback({
+            success: false,
+            message: "Chỉ chủ phòng mới được bắt đầu!",
+          });
         return;
       }
 
       if (room.players.length === 2) {
         // Đủ 2 người: Ghép trực tiếp với nhau
-        const gameRoomId = `game_${room.players[0]}_${room.players[1]}_${Date.now()}`;
-        io.to(room.id).emit("match_found", { gameRoomId, players: room.players });
+        const gameRoomId = `game_${room.players[0]}_${room.players[1]}`;
+        io.to(room.id).emit("match_found", {
+          gameRoomId,
+          players: room.players,
+        });
         console.log(`Phòng ${room.id} đủ 2 người, tiến hành vào game...`);
-        
+
         delete activeRooms[roomId]; // Xóa phòng chờ
         return;
       } else {
@@ -187,14 +208,17 @@ const cleanRooms = (uname: string, io: Server) => {
       const player2Socket = io.sockets.sockets.get(player2SocketId);
 
       if (player1Socket && player2Socket) {
-        const gameRoomId = `game_solo_${Date.now()}`;
+        const gameRoomId = `game_${player1Socket.data.user.username}_${player2Socket.data.user.username}`;
         player1Socket.join(gameRoomId);
         player2Socket.join(gameRoomId);
 
         // Phát sự kiện cho cả 2
         io.to(gameRoomId).emit("match_found", {
           gameRoomId,
-          players: [player1Socket.data.user.username, player2Socket.data.user.username],
+          players: [
+            player1Socket.data.user.username,
+            player2Socket.data.user.username,
+          ],
         });
       }
     } else {

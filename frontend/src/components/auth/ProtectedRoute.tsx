@@ -1,32 +1,38 @@
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router"; // (Hoặc react-router-dom tùy bản bạn dùng)
+
 const ProtectedRoute = () => {
   const { accessToken, user, loading, refresh, fetchMe } = useAuthStore();
   const [starting, setStarting] = useState(true);
 
-  // Khi trang vừa được tải/ tải lại
   const init = async () => {
-    // Có thể mất khi refresh trang
-    if (!accessToken) {
-      await refresh();
-    }
+    try {
+      let currentToken = accessToken;
 
-    if (accessToken && !user) {
-      await fetchMe();
-    }
+      if (!currentToken) {
+        await refresh();
+        currentToken = useAuthStore.getState().accessToken;
+      }
 
-    setStarting(false);
+      if (currentToken && !user) {
+        await fetchMe();
+      }
+    } catch (error) {
+      console.error("Lỗi khởi tạo auth:", error);
+      <Navigate to="/signin" replace />;
+    } finally {
+      setStarting(false);
+    }
   };
 
-  // Tự chạy mỗi lần load trang
   useEffect(() => {
     init();
   }, []);
 
   if (starting || loading) {
     return (
-      <div className="flex h-screen item-center justify-center">
+      <div className="flex h-screen items-center justify-center">
         Đang tải trang ...
       </div>
     );
@@ -36,7 +42,7 @@ const ProtectedRoute = () => {
     return <Navigate to="/trial" replace />;
   }
 
-  return <Outlet></Outlet>;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
