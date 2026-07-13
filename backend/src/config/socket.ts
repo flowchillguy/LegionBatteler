@@ -69,7 +69,7 @@ export const initSocket = (server: HttpServer): Server => {
     // Lắng nghe các event từ client
     // chat tổng
     registerChatHandlers(io, socket);
-    // ghép trận
+    // ghép trận && tạo phòng
     registerMatchmakingHandlers(io, socket);
     // Đếm số người in game
     registerCounterHandlers(io, socket);
@@ -91,4 +91,9 @@ export const getIO = (): Server => {
   }
 
   return io;
+};
+
+// lấy socket id từ user id
+export const getSocketId = (userId: string) => {
+  return userSocketMap[userId];
 };
