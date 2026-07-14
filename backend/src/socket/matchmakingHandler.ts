@@ -265,7 +265,15 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
       const player2SocketId = waitingQueue.shift()!;
 
       // logic ghep 2 người
-      registerMatch(player1SocketId, player2SocketId);
+      const { success, message } = registerMatch(
+        player1SocketId,
+        player2SocketId,
+      );
+      if (success) {
+        if (callback) {
+          callback({ success, message });
+        }
+      }
     }
   });
 
