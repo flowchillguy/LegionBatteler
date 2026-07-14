@@ -8,6 +8,7 @@ import {
   initInGameCountInterval,
   registerCounterHandlers,
 } from "../socket/presenceHandler.js";
+import { registerGameHandlers } from "../socket/gameHandler.js";
 
 let io: Server;
 
@@ -73,6 +74,8 @@ export const initSocket = (server: HttpServer): Server => {
     registerMatchmakingHandlers(io, socket);
     // Đếm số người in game
     registerCounterHandlers(io, socket);
+    // Trận đấu
+    registerGameHandlers(io, socket);
 
     // Sự kiện ngắt kết nối
     socket.on("disconnect", () => {

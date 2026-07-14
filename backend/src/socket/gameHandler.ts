@@ -1,0 +1,25 @@
+import { Server, Socket } from "socket.io";
+import type { GameState } from "../models/Game.js";
+
+// Ô nhớ các trận đang diễn ra
+export const activeGames: Record<string, GameState> = {};
+
+export const registerGameHandlers = (io: Server, socket: Socket) => {
+  // Đầu hàng
+  socket.on("surrender", ({ gameRoomId }) => {
+    const username = socket.data?.user?.username;
+    console.log(`User ${username} đã đầu hàng, phòng ${gameRoomId}`);
+
+    // thông báo endgame
+    io.to(gameRoomId).emit("game_ended", {
+      message: `Trận đấu kết thúc! ${username} đã đầu hàng.`,
+      winner: activeGames[gameRoomId]?.players.find((p) => p !== username),
+    });
+
+    // Xóa trận đấu đã end giải phóng bộ nhớ
+    delete activeGames[gameRoomId];
+
+    // Đá 2 user khỏi socket room 
+    io.in(gameRoomId).socketsLeave(gameRoomId);
+  });
+};
