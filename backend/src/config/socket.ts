@@ -50,7 +50,7 @@ export const initSocket = (server: HttpServer): Server => {
 
       socket.data.user = user;
 
-      userSocketMap[user.id] = socket.id;
+      userSocketMap[user.username] = socket.id;
 
       next();
     } catch (error) {
@@ -94,6 +94,6 @@ export const getIO = (): Server => {
 };
 
 // lấy socket id từ user id
-export const getSocketId = (userId: string) => {
-  return userSocketMap[userId];
+export const getSocketId = (username: string) => {
+  return userSocketMap[username];
 };

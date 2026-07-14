@@ -32,6 +32,7 @@ export default function BottomCenter() {
       }
     });
   };
+
   // form tìm room
   const handleSubmitSearchRoom = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +56,31 @@ export default function BottomCenter() {
       toast.error("Chưa nhập tên chủ phòng!");
     }
   };
+
+  // Gửi lời mời
+  const handlerInviteRoom = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("inviteUser") as string;
+
+    if (username) {
+      socket.emit(
+        "invite_room",
+        { roomId: currentRoom, invitedUsername: username },
+        (res: any) => {
+          const success = res.success as boolean;
+          if (success) {
+            toast.success(`Gửi lời mời đến ${username} thành công!`);
+          } else {
+            toast.error(res.message ? res.message : "Lỗi!");
+          }
+        },
+      );
+    } else {
+      toast.error("Chưa nhập tên người nhận!");
+    }
+  };
+
   // Nút ghép trận
   const handlerS = () => {
     if (isMatchking) return;
@@ -69,16 +95,34 @@ export default function BottomCenter() {
     <div className="flex flex-col justify-between h-full">
       {/* Giao diện phòng ghép */}
       {players && players.length > 0 && !!currentRoom && (
-        <div>
+        <div className="flex flex-col gap-1">
           <h4>Đang đang ở phòng: {currentRoom}</h4>
           <p>Thành viên thứ 1: {players[0]} - chủ phòng</p>
-          <p>Thành viên thứ 2: {players[1]}</p>
+          <div>
+            Thành viên thứ 2:
+            {players?.[1] ? (
+              ` ${players[1]}`
+            ) : (
+              <form onSubmit={handlerInviteRoom}>
+                <Input
+                  type="text"
+                  name="inviteUser"
+                  placeholder="Username muốn mời..."
+                  className="w-44 mr-4"
+                />
+                <Button type="submit" variant="default">
+                  Mời
+                </Button>
+              </form>
+            )}
+          </div>
         </div>
       )}
 
       {/* Khu nút thao tác */}
       <div className="flex flex-row gap-5 justify-center">
-        <Button variant="secondary" onClick={handlerCreateRoom}>
+        <Button variant={!!currentRoom ? "destructive" : "secondary"}
+        onClick={handlerCreateRoom}>
           {!!currentRoom ? "Rời phòng" : "Tạo phòng"}
         </Button>
 

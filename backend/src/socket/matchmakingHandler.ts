@@ -55,7 +55,11 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
     if (room.players.length <= 0) {
       delete activeRooms[roomId];
     } else {
-      io.to(roomId).emit("room_updated", { roomId, players: room.players });
+      io.to(roomId).emit("room_updated", {
+        roomId,
+        players: room.players,
+        message: `${uname} đã rời phòng!`,
+      });
     }
   };
 
@@ -112,7 +116,11 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
     console.log(`User ${username} đã vào phòng ${roomId}`);
 
     // Thông báo cho mọi người trong phòng
-    io.to(roomId).emit("room_updated", { roomId, players: room.players });
+    io.to(roomId).emit("room_updated", {
+      roomId,
+      players: room.players,
+      message: `${room.players[1]} đã vào phòng ${roomId}`,
+    });
 
     if (callback) callback({ success: true, roomId, message: `Đã vào phòng.` });
   });
@@ -140,9 +148,10 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
       roomId,
       sender: username,
     });
-    console.log(
-      `User ${username} đã mời ${invitedUsername} vào phòng ${roomId}`,
-    );
+
+    if (callback)
+      callback({ success: true, message: `Gửi lời mời thành công!` });
+    return;
   });
 
   // 4. Rời phòng
