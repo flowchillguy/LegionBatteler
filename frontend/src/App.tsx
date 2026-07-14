@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { useThemeStore } from "@/stores/useThemeStore";
 import { useEffect } from "react";
 import SocketListener from "./components/SocketListener";
+import GamePage from "./pages/GamePage";
 
 function App() {
   // Chạy mặc định sáng tối
@@ -18,24 +19,23 @@ function App() {
   }, [isDark]);
 
   return (
-    <>
-      {/* Đặt Toaster ở đầu với richColors giúp thông báo hiển thị trên tất cả các trang */}
+    <BrowserRouter>
       <Toaster richColors />
       <SocketListener />
-      <BrowserRouter>
-        <Routes>
-          {/* public routes */}
-          <Route path="/signin" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/trial" element={<TrialPage />} />
 
-          {/* protected routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<MainLobbyPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+      <Routes>
+        {/* public routes */}
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/trial" element={<TrialPage />} />
+
+        {/* protected routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<MainLobbyPage />} />
+          <Route path="/game" element={<GamePage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

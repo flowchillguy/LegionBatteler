@@ -6,10 +6,15 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { useLobbyStore } from "@/stores/useLobbyStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function BottomCenter() {
+  const { user } = useAuthStore();
   const { isMatchking, room, setIsMatchking, setRoom } = useLobbyStore();
   const { currentRoom, players } = room || { currentRoom: null, players: [] };
+
+  // KIỂM TRA QUYỀN HOST:
+  const isHost = players?.[0] === user?.username;
 
   // Nút tạo phòng
   const handlerCreateRoom = () => {
@@ -82,14 +87,26 @@ export default function BottomCenter() {
   };
 
   // Nút ghép trận
-  const handlerS = () => {
-    if (isMatchking) return;
-
-    socket.emit("find_match", () => {
-      console.log(`User ${socket.id} đang ghép trận...`);
-      setIsMatchking(true);
-    });
+  const handlerFindMatch = () => {
+    if (isMatchking) {
+      socket.emit("cancel_find_match");
+      setIsMatchking(false);
+    } else {
+      socket.emit(
+        "find_match",
+        (res: { success: boolean; message: string }) => {
+          if (res.success) {
+            setIsMatchking(true);
+            toast.success(res.message);
+          } else {
+            toast.error(res.message);
+          }
+        },
+      );
+    }
   };
+
+  // nếu đang chơi thì tự chuyển hướng
 
   return (
     <div className="flex flex-col justify-between h-full">
@@ -121,8 +138,10 @@ export default function BottomCenter() {
 
       {/* Khu nút thao tác */}
       <div className="flex flex-row gap-5 justify-center">
-        <Button variant={!!currentRoom ? "destructive" : "secondary"}
-        onClick={handlerCreateRoom}>
+        <Button
+          variant={!!currentRoom ? "destructive" : "secondary"}
+          onClick={handlerCreateRoom}
+        >
           {!!currentRoom ? "Rời phòng" : "Tạo phòng"}
         </Button>
 
@@ -138,8 +157,12 @@ export default function BottomCenter() {
           </Button>
         </form>
 
-        <Button disabled={isMatchking}>
-          {isMatchking ? "Đang ghép..." : "Ghép trận"}
+        <Button
+          variant={!!isMatchking ? "destructive" : "secondary"}
+          onClick={handlerFindMatch}
+          disabled={!!currentRoom && !isHost}
+        >
+          {isMatchking ? "Hủy ghép" : "Ghép trận"}
         </Button>
       </div>
     </div>

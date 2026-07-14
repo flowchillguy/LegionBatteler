@@ -3,9 +3,13 @@ import { useLobbyStore } from "@/stores/useLobbyStore";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import InviteToast from "./lobby/InviteToast";
+import { useNavigate } from "react-router";
+import { useGameStore } from "@/stores/useGameStore";
 
 export default function SocketListener() {
   const { setOnlineUser, setInGameUser, setRoom } = useLobbyStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
     socket.off("online_users");
     socket.on("online_users", ({ onlineUsers }) => {
@@ -45,12 +49,35 @@ export default function SocketListener() {
       toast.error(data?.message || "Chủ phòng đã rời đi, phòng đã bị hủy!");
     });
 
+    socket.off("match_found");
+    socket.on("match_found", (data) => {
+      const { gameRoomId, players, status } = data;
+      // Lưu gameRoomId vào Zustand Store để trang Game lấy ra dùng
+      useGameStore.setState({ gameRoomId, players, status });
+      // Điều hướng sang trang game
+      navigate("/game");
+    });
+
+    socket.off("game_ended");
+    socket.on("game_ended", (data) => {
+      toast.info(data.message);
+
+      useGameStore.setState({
+        gameRoomId: null,
+        players: null,
+        status: "ended",
+      });
+
+      navigate("/");
+    });
     return () => {
       socket.off("online_users");
       socket.off("status_in_game");
       socket.off("room_updated");
       socket.off("receive_invite_room");
       socket.off("room_destroyed");
+      socket.off("match_found");
+      socket.off("game_ended");
     };
   }, []);
 

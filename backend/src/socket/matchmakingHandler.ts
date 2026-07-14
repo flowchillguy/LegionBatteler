@@ -100,6 +100,7 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
       io.to(gameRoomId).emit("match_found", {
         gameRoomId,
         players: [uname1, uname2],
+        status: "playing",
       });
 
       return { success: true, message: "Ghép thành công! Đang vào trận..." };
