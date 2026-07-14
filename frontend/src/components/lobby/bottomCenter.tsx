@@ -89,24 +89,28 @@ export default function BottomCenter() {
   // Nút ghép trận
   const handlerFindMatch = () => {
     if (isMatchking) {
+      // Đang ghép -> Hủy ghép
       socket.emit("cancel_find_match");
       setIsMatchking(false);
+      toast.success("Đã hủy ghép");
     } else {
+      setIsMatchking(true);
+
+      // Gửi lệnh lên Server
       socket.emit(
         "find_match",
         (res: { success: boolean; message: string }) => {
           if (res.success) {
-            setIsMatchking(true);
+            // Server đồng ý cho ghép (thành công)
             toast.success(res.message);
           } else {
+            setIsMatchking(false);
             toast.error(res.message);
           }
         },
       );
     }
   };
-
-  // nếu đang chơi thì tự chuyển hướng
 
   return (
     <div className="flex flex-col justify-between h-full">

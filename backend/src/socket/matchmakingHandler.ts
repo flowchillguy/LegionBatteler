@@ -275,6 +275,10 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
           callback({ success, message });
         }
       }
+    } else {
+      if (callback) {
+        callback({ success: true, message: "Đang tìm đối thủ..." });
+      }
     }
   });
 

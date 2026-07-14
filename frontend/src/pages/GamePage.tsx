@@ -1,9 +1,15 @@
 import { socket } from "@/services/socketService";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/stores/useGameStore";
+import { Navigate } from "react-router";
 
 export default function GamePage() {
   const { gameRoomId } = useGameStore();
+
+  if (!gameRoomId) {
+    // Navigate với replace để xóa lịch sử trang /game, ngăn user bấm nút "Back" trên trình duyệt
+    return <Navigate to="/" replace />;
+  }
 
   const handleSurrender = () => {
     if (gameRoomId) {

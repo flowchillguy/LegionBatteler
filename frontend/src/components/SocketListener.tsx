@@ -68,6 +68,8 @@ export default function SocketListener() {
         status: "ended",
       });
 
+      useLobbyStore.getState().setIsMatchking(false);
+
       navigate("/");
     });
     return () => {
