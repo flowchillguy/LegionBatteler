@@ -1,8 +1,8 @@
 import { Server, Socket } from "socket.io";
-import type { GameState } from "../models/Game.js";
+import type { GameSession } from "../models/Game.js";
 
-// Ô nhớ các trận đang diễn ra
-export const activeGames: Record<string, GameState> = {};
+// Ô nhớ các trận đang diễn ra {gameRoomId, GameSession}
+export const activeGames: Record<string, GameSession> = {}
 
 export const registerGameHandlers = (io: Server, socket: Socket) => {
   // Đầu hàng
@@ -19,7 +19,7 @@ export const registerGameHandlers = (io: Server, socket: Socket) => {
     // Xóa trận đấu đã end giải phóng bộ nhớ
     delete activeGames[gameRoomId];
 
-    // Đá 2 user khỏi socket room 
+    // Đá 2 user khỏi socket room
     io.in(gameRoomId).socketsLeave(gameRoomId);
   });
 };

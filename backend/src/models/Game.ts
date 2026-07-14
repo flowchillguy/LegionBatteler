@@ -1,7 +1,16 @@
-export interface GameState {
-    roomId: string; // id room in socket
-    players: string[];
-    status: "playing" | "ended";
+export interface PlayerData {
+  username: string;
+  gold: number;
+}
 
-    // các chỉ số hp atk ... của 2 bên
+export interface InGameState {
+  players: Record<string, PlayerData>; // key = username
+  castle: { hp: number; level: number };
+}
+
+export interface GameSession {
+  gameRoomId: string;
+  players: string[];
+  status: "playing" | "ended";
+  matchData: InGameState | null; // Để tạm null để khỏi khai báo lúc ghép trận
 }

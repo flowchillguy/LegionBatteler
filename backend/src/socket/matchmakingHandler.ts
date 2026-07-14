@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { getSocketId } from "../config/socket.js";
+import { activeGames } from "./gameHandler.js";
 
 interface CustomRoom {
   id: string;
@@ -60,6 +61,50 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
         players: room.players,
         message: `${uname} đã rời phòng!`,
       });
+    }
+  };
+
+  // Lấy socket id của 2 người tiến hành ghép trận
+  const registerMatch = (player1SocketId: string, player2SocketId: string) => {
+    // Lấy socket
+    const player1Socket = io.sockets.sockets.get(player1SocketId);
+    const player2Socket = io.sockets.sockets.get(player2SocketId);
+
+    if (!player1Socket || !player2Socket) {
+      // Trả về false để huỷ ghép trận đó, không làm sập server
+      return { success: false, message: "Đối thủ đã ngắt kết nối." };
+    }
+
+    if (player1Socket && player2Socket) {
+      const uname1 = player1Socket.data?.user?.username;
+      const uname2 = player2Socket.data?.user?.username;
+
+      if (!uname1 || !uname2)
+        return { success: false, message: "Lỗi dữ liệu người chơi" };
+
+      const gameRoomId = `game_${uname1}_${uname2}`;
+
+      // join game room
+      player1Socket.join(gameRoomId);
+      player2Socket.join(gameRoomId);
+
+      // thêm vào danh sách các trận đang đấu
+      activeGames[gameRoomId] = {
+        gameRoomId,
+        players: [uname1, uname2],
+        status: "playing",
+        matchData: null,
+      };
+
+      // Thông báo thành công
+      io.to(gameRoomId).emit("match_found", {
+        gameRoomId,
+        players: [uname1, uname2],
+      });
+
+      return { success: true, message: "Ghép thành công! Đang vào trận..." };
+    } else {
+      return { success: true, message: "Đang tìm đối thủ..." };
     }
   };
 
@@ -168,70 +213,59 @@ export const registerMatchmakingHandlers = (io: Server, socket: Socket) => {
   // --------------------------------------------------------
 
   socket.on("find_match", (callback) => {
-    console.log(`User ${username} bấm ghép trận...`);
+    console.log(`User ${username} tiếng hành ghép trận!`);
 
     const roomId = getUserCurrentRoomId(username);
 
-    // TRƯỜNG HỢP A: User đang ở trong một phòng
+    // User đang trong room
     if (roomId) {
-      const room = activeRooms[roomId]!;
+      const room = activeRooms[roomId];
 
-      // Chỉ có host mới được quyền bấm ghép trận cho cả phòng
-      if (room.hostUsername !== username) {
-        if (callback)
-          callback({
-            success: false,
-            message: "Chỉ chủ phòng mới được bắt đầu!",
-          });
+      // Chỉ host mới có quyền ghép trận
+      if (room?.hostUsername !== username) {
+        if (callback) {
+          callback({ success: false, message: "Chỉ host mới có thể bắt đầu!" });
+        }
         return;
       }
 
-      if (room.players.length === 2) {
-        // Đủ 2 người: Ghép trực tiếp với nhau
-        const gameRoomId = `game_${room.players[0]}_${room.players[1]}`;
-        io.to(room.id).emit("match_found", {
-          gameRoomId,
-          players: room.players,
-        });
-        console.log(`Phòng ${room.id} đủ 2 người, tiến hành vào game...`);
+      // Room đủ 2 người thì ghép luôn
+      if (room?.players.length === 2) {
+        // Lấy socket id của 2 người
+        const player1SocketId = getSocketId(room.players[0]!);
+        const player2SocketId = getSocketId(room.players[1]!);
 
+        const { success, message } = registerMatch(
+          player1SocketId as string,
+          player2SocketId as string,
+        );
+
+        if (success) {
+          if (callback) {
+            callback({ success, message });
+          }
+        }
         delete activeRooms[roomId]; // Xóa phòng chờ
         return;
       } else {
-        // Có 1 người: Hủy phòng chờ và đẩy vào hàng đợi Queue
+        // Không đủ 2 người thì xóa room ra ghép đơn
         cleanRooms(username, io);
       }
     }
 
-    // TRƯỜNG HỢP B: Đẩy vào Queue (Dành cho solo hoặc phòng 1 người đã bị hủy ở trên)
+    // Đẩy vào hàng đợi ghép
     if (!waitingQueue.includes(socket.id)) {
       waitingQueue.push(socket.id);
     }
 
-    // Kiểm tra hàng đợi xem có đủ 2 người solo không
+    // Tiến hành ghép
     if (waitingQueue.length >= 2) {
+      // Lấy id socket của 2 players
       const player1SocketId = waitingQueue.shift()!;
       const player2SocketId = waitingQueue.shift()!;
 
-      const player1Socket = io.sockets.sockets.get(player1SocketId);
-      const player2Socket = io.sockets.sockets.get(player2SocketId);
-
-      if (player1Socket && player2Socket) {
-        const gameRoomId = `game_${player1Socket.data.user.username}_${player2Socket.data.user.username}`;
-        player1Socket.join(gameRoomId);
-        player2Socket.join(gameRoomId);
-
-        // Phát sự kiện cho cả 2
-        io.to(gameRoomId).emit("match_found", {
-          gameRoomId,
-          players: [
-            player1Socket.data.user.username,
-            player2Socket.data.user.username,
-          ],
-        });
-      }
-    } else {
-      if (callback) callback({ success: true, message: "Đang tìm đối thủ..." });
+      // logic ghep 2 người
+      registerMatch(player1SocketId, player2SocketId);
     }
   });
 
