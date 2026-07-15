@@ -9,6 +9,7 @@ import {
   registerCounterHandlers,
 } from "../socket/presenceHandler.js";
 import { registerGameHandlers } from "../socket/gameHandler.js";
+import { registerRoomHandler } from "../socket/roomHandler.js";
 
 let io: Server;
 
@@ -70,8 +71,10 @@ export const initSocket = (server: HttpServer): Server => {
     // Lắng nghe các event từ client
     // chat tổng
     registerChatHandlers(io, socket);
-    // ghép trận && tạo phòng
+    // ghép trận
     registerMatchmakingHandlers(io, socket);
+    // phòng ghép trận
+    registerRoomHandler(io, socket);
     // Đếm số người in game
     registerCounterHandlers(io, socket);
     // Trận đấu

@@ -1,3 +1,9 @@
+export interface CustomRoom {
+  id: string;
+  hostUsername: string;
+  players: string[]; // Lưu danh sách username (Max 2)
+}
+
 export interface PlayerData {
   username: string;
   gold: number;
