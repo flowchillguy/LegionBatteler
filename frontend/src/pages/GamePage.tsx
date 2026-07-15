@@ -2,29 +2,34 @@ import { socket } from "@/services/socketService";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/stores/useGameStore";
 import { Navigate } from "react-router";
+import GameWrapper from "@/components/game/GameWrapper";
 
 export default function GamePage() {
   const { gameRoomId } = useGameStore();
 
   if (!gameRoomId) {
-    // Navigate với replace để xóa lịch sử trang /game, ngăn user bấm nút "Back" trên trình duyệt
     return <Navigate to="/" replace />;
   }
 
   const handleSurrender = () => {
-    if (gameRoomId) {
-      socket.emit("surrender", { gameRoomId });
-    }
+    socket.emit("surrender", { gameRoomId });
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="mb-4">Trận đấu đang diễn ra</h1>
-      <p className="mb-8">Phòng: {gameRoomId}</p>
+    <div className="relative w-screen h-screen overflow-hidden">
+      {/* CANVAT - GAME PHASER */}
+      <GameWrapper roomId={gameRoomId} />
 
-      <Button variant="destructive" onClick={handleSurrender}>
-        Đầu hàng (Quay về sảnh)
-      </Button>
+      <div className="absolute inset-0 z-10 pointer-events-none p-4">
+        <p>Phòng {gameRoomId}</p>
+        <Button
+          variant="destructive"
+          className="mt-8 pointer-events-auto"
+          onClick={handleSurrender}
+        >
+          Đầu hàng (Quay về sảnh)
+        </Button>
+      </div>
     </div>
   );
 }
