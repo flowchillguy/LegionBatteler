@@ -1,6 +1,17 @@
 import { Server, Socket } from "socket.io";
 import type { GameSession } from "../models/Game.js";
 
+export const getGameRoomIdCurrent = (uname: string,
+  activeGames: Record<string, GameSession>,
+) => {
+  for (const gameRoomId in activeGames) {
+    if (activeGames[gameRoomId]?.players.includes(uname)) {
+      console.log(`[MATCHMAKING] User ${uname} đang ở gameRoomId ${gameRoomId}.`);
+      return gameRoomId;
+    }
+  }
+}
+
 export const registerMatch = (
   player1SocketId: string,
   player2SocketId: string,

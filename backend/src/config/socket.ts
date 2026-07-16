@@ -10,6 +10,7 @@ import {
 } from "../socket/presenceHandler.js";
 import { registerGameHandlers } from "../socket/gameHandler.js";
 import { registerRoomHandler } from "../socket/roomHandler.js";
+import { registerReconnectHandler } from "../socket/reconnectHandler.js";
 
 let io: Server;
 
@@ -69,6 +70,8 @@ export const initSocket = (server: HttpServer): Server => {
     initInGameCountInterval(io);
 
     // Lắng nghe các event từ client
+    // load lại trang
+    registerReconnectHandler(io, socket);
     // chat tổng
     registerChatHandlers(io, socket);
     // ghép trận

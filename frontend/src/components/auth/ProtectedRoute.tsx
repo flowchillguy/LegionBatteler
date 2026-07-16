@@ -1,10 +1,13 @@
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router"; // (Hoặc react-router-dom tùy bản bạn dùng)
+import { Navigate, Outlet, useNavigate } from "react-router";
+import { useGameStore } from "@/stores/useGameStore";
+import { socket } from "@/services/socketService";
 
 const ProtectedRoute = () => {
   const { accessToken, user, loading, refresh, fetchMe } = useAuthStore();
   const [starting, setStarting] = useState(true);
+  const navigate = useNavigate();
 
   const init = async () => {
     try {
@@ -18,9 +21,22 @@ const ProtectedRoute = () => {
       if (currentToken && !user) {
         await fetchMe();
       }
+
+      // GỌI SOCKET ĐỂ KIỂM TRA TRẬN ĐẤU CŨ
+      socket.emit("check_active_game", (res: any) => {
+        if (res && res.success) {
+          const { gameRoomId, players, status } = res;
+
+          // Cập nhật lại Store y như lúc mới ghép trận xong
+          useGameStore.setState({ gameRoomId, players, status });
+
+          // Điều hướng thẳng vào game
+          navigate("/game");
+        }
+      });
     } catch (error) {
       console.error("Lỗi khởi tạo auth:", error);
-      <Navigate to="/signin" replace />;
+      navigate("/signin", { replace: true }); // Sửa lỗi gọi component ảo trong catch
     } finally {
       setStarting(false);
     }
