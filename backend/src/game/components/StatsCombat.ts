@@ -28,19 +28,6 @@ export class StatsCombat {
     this.bonus = values.reduce((total, num) => total + num, this.bonus);
   }
 
-  applyWeapon() {
-    if (this.weapon) {
-      this.atk.addBase(this.weapon.baseAtk);
-      this.atk.applyMult([this.weapon.multAtk]);
-      this.hp.applyMult([this.weapon.multHp]);
-      this.def.applyMult([this.weapon.multDef]);
-      this.critRate.applyFlat([this.weapon.addCritRate]);
-      this.critDamgage.applyFlat([this.weapon.addCritDamage]);
-      this.siege.applyFlat([this.weapon.addSiege]);
-      this.applybonus([this.weapon.bonus]);
-    }
-  }
-
   isCrit(): boolean {
     return Math.random() <= this.critRate.calculateStatsTotal();
   }

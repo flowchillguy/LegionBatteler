@@ -16,6 +16,7 @@ import type { ICharacterData, ICharacterDatabase } from "../types/JsonTypes.js";
 import { StatsCombat } from "../components/StatsCombat.js";
 import { StatsNormal } from "../components/StatsNormal.js";
 import { StatsAdvanced } from "../components/StatsAdvanced.js";
+import type { Weapon } from "../entities/Weapon.js";
 
 export class UnitFactory {
   static createUnit(
@@ -23,6 +24,7 @@ export class UnitFactory {
     team: TTeam,
     lane: TLane,
     x: TX,
+    weapon: Weapon | null,
   ): Units {
     const database = unitsConfig as ICharacterDatabase;
     const config = database[unitId];
@@ -38,7 +40,7 @@ export class UnitFactory {
     const skillTargeting = targeting.skill;
 
     const statsData = {
-      weapon: null,
+      weapon: weapon,
       atk: new StatsNormal(stats.atk),
       hp: new StatsNormal(stats.hp),
       def: new StatsNormal(stats.def),
@@ -85,6 +87,9 @@ export class UnitFactory {
       actionCombat,
     };
 
-    return new Units(dataUnit);
+    const unit = new Units(dataUnit);
+    //trang bị nếu có vũ khí
+    if (weapon) weapon.armed(unit);
+    return unit;
   }
 }

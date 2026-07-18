@@ -37,8 +37,8 @@ export type TPosition =
 // 0 và 10 là tọa độ 2 fortress trái và phải
 export type TX = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type TLane = 0 | 1 | 2 | 3 | 4;
-
 export type TTargetConfig = "enemy" | "ally";
+export type TStar = 1 | 2 | 3;
 
 export interface IDamageable {
   team: TTeam;
@@ -54,6 +54,7 @@ export interface IWeapon {
   name: string;
   cost: number;
   position: TPosition;
+  star: TStar;
   baseAtk: number;
   multAtk: number;
   multHp: number;
