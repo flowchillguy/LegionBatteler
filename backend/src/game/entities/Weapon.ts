@@ -1,4 +1,4 @@
-import type { IWeapon, TPosition } from "../../types/EntitiesTypes.js";
+import type { IWeapon, TPosition } from "../types/EntitiesTypes.js";
 
 const EFFICIENCY_REDUCTION_FACTOR = 0.1;
 

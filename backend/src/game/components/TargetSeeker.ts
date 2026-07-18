@@ -1,65 +1,83 @@
 import type { IDamageable, ITargeting } from "../types/EntitiesTypes.js";
 
+export type TargetResult =
+  | { action: "skill"; targets: IDamageable[] }
+  | { action: "normal"; targets: IDamageable[] }
+  | { action: "move"; targets: [] };
+
 export class TargetSeeker {
+  // Hàm public duy nhất mà class cha sẽ gọi
   execute(
-    actor: IDamageable, // unit đang đánh
+    actor: IDamageable,
+    allUnitsInGame: IDamageable[],
+    normalTargeting: ITargeting,
+    skillTargeting: ITargeting, // Có thể unit chưa có skill
+    isSkillReady: boolean, // Class cha truyền vào trạng thái cooldown của skill
+  ): TargetResult {
+    // 1. Ưu tiên kiểm tra Skill trước
+    if (skillTargeting && isSkillReady) {
+      const skillTargets = this.findTargets(
+        actor,
+        allUnitsInGame,
+        skillTargeting,
+      );
+      if (skillTargets.length > 0) {
+        return { action: "skill", targets: skillTargets };
+      }
+    }
+
+    // 2. Nếu Skill không có mục tiêu (hoặc đang cooldown), kiểm tra đánh Normal
+    const normalTargets = this.findTargets(
+      actor,
+      allUnitsInGame,
+      normalTargeting,
+    );
+    if (normalTargets.length > 0) {
+      return { action: "normal", targets: normalTargets };
+    }
+
+    // 3. Không có mục tiêu nào lọt vào cả 2 tầm đánh -> Tiến lên
+    return { action: "move", targets: [] };
+  }
+
+  // Hàm private chứa core logic
+  private findTargets(
+    actor: IDamageable,
     allUnitsInGame: IDamageable[],
     targeting: ITargeting,
   ): IDamageable[] {
     let validTargets: { unit: IDamageable; dist: number }[] = [];
-    let fortressTarget: IDamageable | null = null; // Biến lưu trữ Thành địch
     const direction = actor.team === "left" ? 1 : -1;
     const actorLane = (actor.lane as number) ?? 0;
 
     for (let otherUnit of allUnitsInGame) {
-      // Lọc theo phe
       if (targeting.config === "enemy" && actor.team === otherUnit.team)
         continue;
       if (targeting.config === "ally" && actor.team !== otherUnit.team)
         continue;
       if (otherUnit.isDead()) continue;
 
-      // lọc theo khoảng cách (trục X)
       const distanceX = (otherUnit.x - actor.x) * direction;
 
-      // Lọc theo fortress
       if (otherUnit.position === "Fortress") {
-        // Chọn đồng minh thì không thể chọn thành
-        if (targeting.config === "ally") {
-          continue;
-        }
-
+        if (targeting.config === "ally") continue;
         if (distanceX >= 0 && distanceX <= targeting.rangeX) {
-          fortressTarget = otherUnit;
+          validTargets.push({ unit: otherUnit, dist: -1 }); // mẹo ưu tiên trụ
         }
         continue;
       }
 
-      // Lọc theo lane (trục y)
       const targetLane = (otherUnit.lane as number) ?? 0;
       const laneDiff = Math.abs(actorLane - targetLane);
       if (laneDiff > targeting.laneSpread) continue;
 
-      // Nếu là đòn đánh thẳng (không phải AoE 3x3 quanh bản thân), thì mục tiêu phải nằm PHÍA TRƯỚC mặt
       if (targeting.laneSpread === 0 && distanceX < 0) continue;
-
-      // Nếu khoảng cách tuyệt đối lớn hơn tầm đánh -> loại
       if (Math.abs(distanceX) > targeting.rangeX) continue;
 
-      // Lọt qua các màng lọc -> Là mục tiêu hợp lệ
       validTargets.push({ unit: otherUnit, dist: Math.abs(distanceX) });
     }
 
-    // KIỂM TRA MỤC TIÊU
-    // Nếu Thành lọt vào tầm đánh, bỏ qua mọi mục tiêu khác!
-    if (fortressTarget) {
-      return [fortressTarget];
-    }
-
-    // Sắp xếp mục tiêu gần nhất lên đầu
     validTargets.sort((a, b) => a.dist - b.dist);
-
-    // Trả về mục tiêu tối đa được/bị nhắm đến
     return validTargets.slice(0, targeting.maxTargets).map((t) => t.unit);
   }
 }

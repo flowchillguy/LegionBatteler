@@ -1,10 +1,9 @@
-import type { Weapon } from "../entities/items/Weapon.js";
+import type { Weapon } from "../entities/Weapon.js";
 import type { IStatsCombat, TPosition } from "../types/EntitiesTypes.js";
 import { StatsAdvanced } from "./StatsAdvanced.js";
 import { StatsNormal } from "./StatsNormal.js";
 
 export class StatsCombat {
-  readonly position: TPosition;
   weapon: Weapon | null;
   atk: StatsNormal;
   hp: StatsNormal;
@@ -15,8 +14,7 @@ export class StatsCombat {
   bonus: number;
 
   constructor(stats: IStatsCombat) {
-    this.position = stats.position;
-    this.weapon = stats.weapon;
+    this.weapon = stats.weapon ?? null;
     this.atk = stats.atk;
     this.hp = stats.hp;
     this.def = stats.def;
@@ -32,7 +30,6 @@ export class StatsCombat {
 
   applyWeapon() {
     if (this.weapon) {
-      this.weapon.checkPosition(this.position);
       this.atk.addBase(this.weapon.baseAtk);
       this.atk.applyMult([this.weapon.multAtk]);
       this.hp.applyMult([this.weapon.multHp]);
@@ -44,8 +41,16 @@ export class StatsCombat {
     }
   }
 
+  isCrit(): boolean {
+    return Math.random() <= this.critRate.calculateStatsTotal();
+  }
+
   caculateRawDamge(scale: number): number {
     const totalAtkCurrent = this.atk.calculateStatsTotal();
-    return totalAtkCurrent * scale * (1 + this.bonus);
+    const rawDamage = totalAtkCurrent * scale * (1 + this.bonus);
+    if (this.isCrit()) {
+      return rawDamage * (1 + this.critDamgage.calculateStatsTotal());
+    }
+    return rawDamage;
   }
 }

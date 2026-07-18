@@ -2,23 +2,24 @@ import type { ActionCombat } from "../components/ActionCombat.js";
 import type { StatsAdvanced } from "../components/StatsAdvanced.js";
 import type { StatsNormal } from "../components/StatsNormal.js";
 import type { TargetSeeker } from "../components/TargetSeeker.js";
-import type { Weapon } from "../entities/items/Weapon.js";
+import type { Weapon } from "../entities/Weapon.js";
+import { Units } from "../entities/Units.js";
 
 export const COUNTER_MATRIX: Record<string, Record<string, number>> = {
-  Marksman: {
+  Archer: {
     Defender: 1.1,
     Breaker: 0.95,
   },
   Defender: {
     Fighter: 1.1,
-    Marksman: 0.95,
+    Archer: 0.95,
   },
   Fighter: {
     Breaker: 1.1,
     Defender: 0.95,
   },
   Breaker: {
-    Marksman: 1.1,
+    Archer: 1.1,
     Fighter: 0.95,
   },
   Supporter: {},
@@ -26,7 +27,7 @@ export const COUNTER_MATRIX: Record<string, Record<string, number>> = {
 
 export type TTeam = "left" | "right";
 export type TPosition =
-  | "Marksman"
+  | "Archer"
   | "Defender"
   | "Support"
   | "Fighter"
@@ -64,7 +65,6 @@ export interface IWeapon {
 }
 
 export interface IStatsCombat {
-  position: TPosition;
   weapon: Weapon | null;
   atk: StatsNormal;
   hp: StatsNormal;
@@ -75,36 +75,33 @@ export interface IStatsCombat {
   bonus: number;
 }
 
+export interface SkillContext {
+  caster: Units;
+  targets: IDamageable[];
+}
+
 export interface ISkillBehavior {
-  execute(
-    statsCombat: IStatsCombat,
-    scaleSkill: number,
-    targets: IDamageable[],
-  ): void;
+  execute(context: SkillContext): void;
 }
 
 export interface ITargeting {
   config: TTargetConfig;
   rangeX: number;
   laneSpread: number; // Đánh lan nhiều hàng
-  pierce: boolean; // đánh xuyên nhiều mục tiêu
   maxTargets: number;
 }
 
 export interface IUnits {
-  id: string;
   name: string;
   cost: number;
-  cd: number;
-  team: TTeam;
+  spawnCd: number;
   position: TPosition;
+  moveSpeed: number;
+  team: TTeam;
   x: TX;
   lane: TLane;
   targetSeeker: TargetSeeker;
-  targetingNormal: ITargeting;
-  targetingSkill: ITargeting;
-  skillBehavior: ISkillBehavior;
+  normalTargeting: ITargeting;
+  skillTargeting: ITargeting;
   actionCombat: ActionCombat;
-  moveSpeed: number;
-  currentHp: number;
 }

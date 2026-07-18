@@ -1,0 +1,62 @@
+{
+  "Archer_01": {
+    "info": {
+      "name": "Xạ thủ tân binh",
+      "cost": 5,
+      "spawnCd": 4,
+      "moveSpeed": 0.1,
+      "position": "Archer"
+    },
+    "targeting": {
+      "normal": {
+        "config": "enemy",
+        "rangeX": 5,
+        "laneSpread": 0,
+        "maxTargets": 1
+      },
+      "skill": {
+        "config": "enemy",
+        "rangeX": 5,
+        "laneSpread": 1,
+        "maxTargets": 3
+      }
+    },
+    "stats": {
+      "hp": 100,
+      "atk": 3,
+      "def": 20,
+      "critRate": 0.5,
+      "critDamage": 1.5,
+      "siege": 1.2
+    },
+    "combat": {
+      "attackSpeed": 1,
+      "cdSkill": 8,
+      "scaleNormal": 1.5
+    },
+    "skillBehaviors": [
+      {
+        "type": "StackingDamage",
+        "params": {
+          "scale": 1.7,
+          "baseStack": 1,
+          "multiplier": 1.05
+        }
+      },
+      {
+        "type": "Lifesteal",
+        "params": {
+          "scale": 1,
+          "healRercent": 0.2
+        }
+      }
+    ],
+    "assets": {
+      "move": "",
+      "attack_normal": "",
+      "attack_skill": "",
+      "sfx_attack": "",
+      "sfx_skill": ""
+    }
+  }
+}
