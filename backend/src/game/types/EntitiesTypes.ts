@@ -50,7 +50,6 @@ export interface IDamageable {
 }
 
 export interface IWeapon {
-  id: string;
   name: string;
   cost: number;
   position: TPosition;

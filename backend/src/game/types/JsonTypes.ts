@@ -1,5 +1,5 @@
 // file: types/JsonTypes.ts
-import type { TPosition, ITargeting } from "./EntitiesTypes.js";
+import type { TPosition, ITargeting, TStar } from "./EntitiesTypes.js";
 import type { TSkillBehaviorType } from "../components/SkillBehavior.js";
 
 export interface ICharacterInfo {
@@ -55,4 +55,32 @@ export interface ICharacterData {
 
 export interface ICharacterDatabase {
   [characterId: string]: ICharacterData;
+}
+
+// vũ khí
+export interface IWeaponInfo {
+  name: string;
+  position: TPosition;
+  cost: number;
+  star: TStar;
+}
+
+export interface IWeaponStatsConfig {
+  baseAtk: number;
+  multAtk: number;
+  multHp: number;
+  multDef: number;
+  addCritRate: number;
+  addCritDamage: number;
+  addSiege: number;
+  bonus: number;
+}
+
+export interface IWeaponData {
+  info: IWeaponInfo;
+  stats: IWeaponStatsConfig;
+}
+
+export interface IweaponDataBase {
+  [weaponId: string]: IWeaponData;
 }

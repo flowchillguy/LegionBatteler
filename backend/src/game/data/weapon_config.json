@@ -1,0 +1,20 @@
+{
+  "Weapon_1": {
+    "info": {
+      "name": "Cung nhẹ",
+      "position": "Archer",
+      "cost": 3,
+      "star": 1
+    },
+    "stats": {
+      "baseAtk": 50,
+      "multAtk": 0.5,
+      "multHp": 0,
+      "multDef": 0,
+      "addCritRate": 0.15,
+      "addCritDamage": 0.15,
+      "addSiege": 0.1,
+      "bonus": 0.1
+    }
+  }
+}

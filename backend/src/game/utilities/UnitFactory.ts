@@ -1,4 +1,3 @@
-// file: factories/UnitFactory.ts
 import unitsConfig from "../data/units_config.json" with { type: "json" };
 import { ActionCombat } from "../components/ActionCombat.js";
 import { TargetSeeker } from "../components/TargetSeeker.js";
@@ -10,9 +9,8 @@ import type {
   TTeam,
   TX,
   ISkillBehavior,
-  IStatsCombat,
 } from "../types/EntitiesTypes.js";
-import type { ICharacterData, ICharacterDatabase } from "../types/JsonTypes.js";
+import type { ICharacterDatabase } from "../types/JsonTypes.js";
 import { StatsCombat } from "../components/StatsCombat.js";
 import { StatsNormal } from "../components/StatsNormal.js";
 import { StatsAdvanced } from "../components/StatsAdvanced.js";

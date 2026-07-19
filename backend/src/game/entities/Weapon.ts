@@ -4,11 +4,10 @@ import type { Units } from "./Units.js";
 const EFFICIENCY_REDUCTION_FACTOR = 0.1;
 
 export class Weapon {
-  readonly id: string;
   readonly name: string;
   readonly position: TPosition;
   readonly cost: number;
-  star: TStar;
+  readonly star: TStar;
   baseAtk: number;
   multAtk: number;
   multHp: number;
@@ -19,7 +18,6 @@ export class Weapon {
   bonus: number;
 
   constructor(statsWeapon: IWeapon) {
-    this.id = statsWeapon.id;
     this.name = statsWeapon.name;
     this.position = statsWeapon.position;
     this.cost = statsWeapon.cost;
