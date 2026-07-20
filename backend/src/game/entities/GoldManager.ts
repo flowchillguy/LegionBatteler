@@ -6,48 +6,58 @@ const GOLD_INCOME = 5; // vàng nhận được mỗi chu kỳ
 const GOLD_BONUS = 0.2;
 const GOLD_UNIT_DROP = 1;
 const GOLD_FORTRESS_DROP = 4;
-const CYCLE = 5; //chu kỳ nhận vàng
+const CYCLE = 5; // 5 giây nhận 1 lần (chu kỳ)
 
 export class GoldManager {
   gold: number = 0;
-  level: number = 0;
-  cycle: number = CYCLE;
-  goldIncome: number = GOLD_INCOME;
-  goldBonus: number = GOLD_BONUS;
+  economyLevel: number = 0;
   goldTimer: number = 0;
 
-  change(money: number): boolean {
-    if (this.gold + money >= 0) {
-      this.gold += money;
-      if (this.gold > MAX_GOLD) this.gold = MAX_GOLD;
+  // khả năng tri chả
+  canAfford(amount: number): boolean {
+    return this.gold >= amount;
+  }
+
+  // trừ tiền
+  deductGold(amount: number): boolean {
+    if (!this.canAfford(amount)) return false;
+    this.gold -= amount;
+    return true;
+  }
+
+  // lên cấp
+  upgradeEconomy(): boolean {
+    if (this.economyLevel < MAX_LEVEL) {
+      this.economyLevel++;
       return true;
     }
     return false;
   }
 
-  levelUp() {
-    if (this.level < MAX_LEVEL) {
-      this.goldIncome = Math.round(this.goldIncome * (1 + this.goldBonus));
-      this.level++;
-    }
+  // hàm cộng gold
+  receiveGold(amount: number) {
+    this.gold += amount;
+    if (this.gold > MAX_GOLD) this.gold = MAX_GOLD;
   }
 
-  receiveSalary(deltaTime: number): void {
+  // hàm cộng tiền định kì (nhận lương)
+  receiveSalary(deltaTime: number) {
     this.goldTimer += deltaTime;
-    if (this.goldTimer >= this.cycle) {
-      this.change(this.goldIncome);
-      this.goldTimer -= this.cycle;
+    if (this.goldTimer >= CYCLE) {
+      this.goldTimer -= CYCLE;
+      const salary = GOLD_INCOME * (1 + this.economyLevel * GOLD_BONUS);
+      this.receiveGold(salary);
     }
   }
 
-  pickUp(object: IDamageable): void {
-    if (object.position === "Fortress") {
-      this.change(GOLD_FORTRESS_DROP);
-      return;
-    }
+  // hàm nhặt tiền từ hạ lính hoặc thành
+  receiveTips(object: IDamageable) {
     if (object.isDead()) {
-      this.change(GOLD_UNIT_DROP);
-      return;
+      if (object.position === "Fortress") {
+        this.receiveGold(GOLD_FORTRESS_DROP);
+      } else {
+        this.receiveGold(GOLD_UNIT_DROP);
+      }
     }
   }
 }

@@ -5,10 +5,10 @@ import type {
   TX,
 } from "../types/EntitiesTypes.js";
 
-const DEFAULT_HP = 10000;
-const DEFAULT_DEF = 1000;
+const DEFAULT_HP = 1000;
+const DEFAULT_DEF = 100;
 const DEFAULT_DEF_FACTOR = 100;
-const HP_HEAL_WHEN_LV_UP = 1000;
+const HP_HEAL_WHEN_LV_UP = 500;
 const MAX_LEVEL = 5;
 
 export class Fortress implements IDamageable {

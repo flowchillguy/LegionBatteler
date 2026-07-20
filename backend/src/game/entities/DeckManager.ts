@@ -8,9 +8,18 @@ import {
   type TPosition,
 } from "../types/EntitiesTypes.js";
 
+// chỉ số cộng hưởng
 const BASE_VALUE = 10;
 const GROWTH_RATE = 1.2;
 const ADD_VALUE = 0.6;
+
+// chỉ số level
+const MAX_LEVEL = 5;
+const BUFF_LEVEL_DATA = {
+  baseAtk: 5,
+  multHp: 0.05,
+  multDef: 0.05,
+};
 
 const database = unitsConfig as ICharacterDatabase;
 
@@ -23,14 +32,8 @@ export class DeckManager {
     {} as Record<TPosition, number>,
   );
 
-  flatAtk = 0;
-  flatHp = 0;
-  flatDef = 0;
-
-  addCritRate = 0;
-  addCritDamage = 0;
-
   buffData: IBuffData = {};
+  level: number = 0;
 
   updateSynergy(unitIds: TUnitId[]) {
     for (const unitId of unitIds) {
@@ -41,23 +44,32 @@ export class DeckManager {
       this.countPosition[position]++;
     }
 
-    this.flatAtk = BASE_VALUE * GROWTH_RATE ** this.countPosition.Destroyer;
-    this.flatHp = BASE_VALUE * GROWTH_RATE ** this.countPosition.Support;
-    this.flatDef = BASE_VALUE * GROWTH_RATE ** this.countPosition.Defender;
+    const flatAtk = BASE_VALUE * GROWTH_RATE ** this.countPosition.Destroyer;
+    const flatHp = BASE_VALUE * GROWTH_RATE ** this.countPosition.Support;
+    const flatDef = BASE_VALUE * GROWTH_RATE ** this.countPosition.Defender;
 
-    this.addCritRate = ADD_VALUE * this.countPosition.Fighter;
-    this.addCritDamage = ADD_VALUE * this.countPosition.Archer;
+    const addCritRate = ADD_VALUE * this.countPosition.Fighter;
+    const addCritDamage = ADD_VALUE * this.countPosition.Archer;
 
     this.buffData = {
-      flatAtk: this.flatAtk,
-      flatHp: this.flatHp,
-      flatDef: this.flatDef,
-      addCritRate: this.addCritDamage,
-      addCritDamage: this.addCritDamage,
+      flatAtk,
+      flatHp,
+      flatDef,
+      addCritRate,
+      addCritDamage,
     };
   }
 
   applyBuffSynergy(units: Units) {
     units.actionCombat.statsCombat.addBuff("synergy", this.buffData);
+  }
+
+  applyBuffLevel(units: Units) {
+    if (this.level < MAX_LEVEL) {
+      units.actionCombat.statsCombat.addBuff(
+        `level_${this.level}_buff`,
+        BUFF_LEVEL_DATA,
+      );
+    }
   }
 }
