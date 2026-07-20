@@ -1,16 +1,17 @@
 export class StatsAdvanced {
   readonly base: number;
-  flat: number = 0;
+  currentStats: number;
 
   constructor(base: number) {
     this.base = base;
+    this.currentStats = base;
   }
 
-  applyFlat(values: number[]): void {
-    this.flat = values.reduce((total, num) => total + num, this.flat);
+  applyStats(value: number): void {
+    this.currentStats += value;
   }
 
-  calculateStatsTotal(): number {
-    return this.base + this.flat;
+  resetStats(): void {
+    this.currentStats = this.base;
   }
 }

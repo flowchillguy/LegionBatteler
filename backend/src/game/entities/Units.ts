@@ -47,7 +47,10 @@ export class Units implements IDamageable {
   }
 
   getMaxHp(): number {
-    return Math.max(1, this.actionCombat.statsCombat.hp.calculateStatsTotal());
+    return Math.max(
+      1,
+      this.actionCombat.statsCombat.hp.calculateCurrentStatsTotal(),
+    );
   }
 
   getHeal(valueHeal: number): void {
@@ -58,7 +61,7 @@ export class Units implements IDamageable {
     const defFactor =
       DEFAULT_DEF_FACTOR /
       (DEFAULT_DEF_FACTOR +
-        this.actionCombat.statsCombat.def.calculateStatsTotal());
+        this.actionCombat.statsCombat.def.calculateCurrentStatsTotal());
     const finalDamage = Math.max(1, rawDamage * defFactor);
     this.currentHp -= finalDamage;
   }

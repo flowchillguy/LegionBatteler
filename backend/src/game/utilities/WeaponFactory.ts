@@ -1,5 +1,6 @@
 import weaponConfig from "../data/weapon_config.json" with { type: "json" };
 import { Weapon } from "../entities/Weapon.js";
+import type { IBuffData } from "../types/EntitiesTypes.js";
 import type { IweaponDataBase } from "../types/JsonTypes.js";
 
 const database = weaponConfig as IweaponDataBase;
@@ -14,19 +15,36 @@ export class WeaponFactory {
 
     const { info, stats } = config;
 
+    const buffData: Partial<IBuffData> = {};
+
+    const statKeys: (keyof IBuffData)[] = [
+      "baseAtk",
+      "multAtk",
+      "flatAtk",
+      "multHp",
+      "flatHp",
+      "multDef",
+      "flatDef",
+      "addCritRate",
+      "addCritDamage",
+      "addSiege",
+      "bonus",
+    ];
+
+    for (const key of statKeys) {
+      const value = stats[key];
+      if (value !== undefined) {
+        buffData[key] = value;
+      }
+    }
+
     const statsWeapon = {
       name: info.name,
-      position: info.position,
       cost: info.cost,
+      position: info.position,
       star: info.star,
-      baseAtk: stats.baseAtk,
-      multAtk: stats.multAtk,
-      multHp: stats.multHp,
-      multDef: stats.multDef,
-      addCritRate: stats.addCritRate,
-      addCritDamage: stats.addCritDamage,
-      addSiege: stats.addSiege,
-      bonus: stats.bonus,
+
+      buffData: buffData,
     };
 
     return new Weapon(statsWeapon);
@@ -41,3 +59,5 @@ export class WeaponFactory {
     return weaponsDepot;
   }
 }
+
+console.log(WeaponFactory.createAllWeapon());

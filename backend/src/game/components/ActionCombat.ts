@@ -64,9 +64,7 @@ export class ActionCombat {
     const rawDamage = this.statsCombat.caculateRawDamge(this.scaleNormal);
     for (const enemy of targets) {
       if (enemy.position === "Fortress") {
-        enemy.takeDamage(
-          rawDamage * (1 + this.statsCombat.siege.calculateStatsTotal()),
-        );
+        enemy.takeDamage(rawDamage * (1 + this.statsCombat.siege.currentStats));
         continue;
       }
 

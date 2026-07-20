@@ -1,5 +1,5 @@
 // file: types/JsonTypes.ts
-import type { TPosition, ITargeting, TStar } from "./EntitiesTypes.js";
+import type { TPosition, ITargeting, TStar, IBuffData } from "./EntitiesTypes.js";
 import type { TSkillBehaviorType } from "../components/SkillBehavior.js";
 
 export interface ICharacterInfo {
@@ -29,6 +29,7 @@ export interface ICharacterStats {
   critRate: number;
   critDamage: number;
   siege: number;
+  bonus: number;
 }
 
 export interface ISkillBehaviorConfig {
@@ -65,20 +66,9 @@ export interface IWeaponInfo {
   star: TStar;
 }
 
-export interface IWeaponStatsConfig {
-  baseAtk: number;
-  multAtk: number;
-  multHp: number;
-  multDef: number;
-  addCritRate: number;
-  addCritDamage: number;
-  addSiege: number;
-  bonus: number;
-}
-
 export interface IWeaponData {
   info: IWeaponInfo;
-  stats: IWeaponStatsConfig;
+  stats: IBuffData;
 }
 
 export interface IweaponDataBase {

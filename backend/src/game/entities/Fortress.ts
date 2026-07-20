@@ -12,12 +12,13 @@ const HP_HEAL_WHEN_LV_UP = 1000;
 const MAX_LEVEL = 5;
 
 export class Fortress implements IDamageable {
-  public team: TTeam;
-  public position: TPosition = "Fortress";
-  public x: TX;
-  public currentHp: number = DEFAULT_HP;
-  private readonly def: number = DEFAULT_DEF;
-  public level: number = 0;
+  team: TTeam;
+  position: TPosition = "Fortress";
+  x: TX;
+  maxHp: number = DEFAULT_HP;
+  currentHp: number = DEFAULT_HP;
+  readonly def: number = DEFAULT_DEF;
+  level: number = 0;
 
   constructor(team: TTeam) {
     this.team = team;

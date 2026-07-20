@@ -16,5 +16,21 @@
       "addSiege": 0.1,
       "bonus": 0.1
     }
+  },
+  "Weapon_2": {
+    "info": {
+      "name": "Cung dài",
+      "position": "Archer",
+      "cost": 4,
+      "star": 2
+    },
+    "stats": {
+      "baseAtk": 55,
+      "multAtk": 0.6,
+      "multHp": 0,
+      "multDef": 0,
+      "addSiege": 0.1,
+      "bonus": 0.6
+    }
   }
 }

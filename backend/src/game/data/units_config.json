@@ -27,7 +27,8 @@
       "def": 20,
       "critRate": 0.5,
       "critDamage": 1.5,
-      "siege": 1.2
+      "siege": 1.2,
+      "bonus": 0
     },
     "combat": {
       "attackSpeed": 1,

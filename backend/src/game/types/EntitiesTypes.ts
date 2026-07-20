@@ -34,6 +34,14 @@ export type TPosition =
   | "Destroyer"
   | "Fortress";
 
+export const ALL_POSITIONS_OF_UNITS: TPosition[] = [
+  "Archer",
+  "Defender",
+  "Support",
+  "Fighter",
+  "Destroyer",
+];
+
 // 0 và 10 là tọa độ 2 fortress trái và phải
 export type TX = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export type TLane = 0 | 1 | 2 | 3 | 4;
@@ -54,14 +62,8 @@ export interface IWeapon {
   cost: number;
   position: TPosition;
   star: TStar;
-  baseAtk: number;
-  multAtk: number;
-  multHp: number;
-  multDef: number;
-  addCritRate: number;
-  addCritDamage: number;
-  addSiege: number;
-  bonus: number;
+
+  buffData: IBuffData;
 }
 
 export interface IStatsCombat {
@@ -70,9 +72,9 @@ export interface IStatsCombat {
   hp: StatsNormal;
   def: StatsNormal;
   critRate: StatsAdvanced;
-  critDamgage: StatsAdvanced;
+  critDamage: StatsAdvanced;
   siege: StatsAdvanced;
-  bonus: number;
+  bonus: StatsAdvanced;
 }
 
 export interface SkillContext {
@@ -104,4 +106,22 @@ export interface IUnits {
   normalTargeting: ITargeting;
   skillTargeting: ITargeting;
   actionCombat: ActionCombat;
+}
+
+export interface IBuffData {
+  baseAtk?: number;
+  multAtk?: number;
+  flatAtk?: number;
+
+  multHp?: number;
+  flatHp?: number;
+
+  multDef?: number;
+  flatDef?: number;
+
+  addCritRate?: number;
+  addCritDamage?: number;
+  
+  addSiege?: number;
+  bonus?: number;
 }

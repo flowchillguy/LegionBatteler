@@ -16,9 +16,11 @@ import { StatsNormal } from "../components/StatsNormal.js";
 import { StatsAdvanced } from "../components/StatsAdvanced.js";
 import type { Weapon } from "../entities/Weapon.js";
 
+export type TUnitId = keyof typeof unitsConfig;
+
 export class UnitFactory {
   static createUnit(
-    unitId: keyof typeof unitsConfig,
+    unitId: TUnitId,
     team: TTeam,
     lane: TLane,
     x: TX,
@@ -43,9 +45,9 @@ export class UnitFactory {
       hp: new StatsNormal(stats.hp),
       def: new StatsNormal(stats.def),
       critRate: new StatsAdvanced(stats.critRate),
-      critDamgage: new StatsAdvanced(stats.critDamage),
+      critDamage: new StatsAdvanced(stats.critDamage),
       siege: new StatsAdvanced(stats.siege),
-      bonus: 0,
+      bonus: new StatsAdvanced(stats.bonus),
     };
     const statsCombat = new StatsCombat(statsData);
 
