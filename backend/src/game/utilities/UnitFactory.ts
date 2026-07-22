@@ -24,7 +24,7 @@ export class UnitFactory {
     team: TTeam,
     lane: TLane,
     x: TX,
-    weapon: Weapon | null,
+    weapon: Weapon[] | null,
   ): Units {
     const database = unitsConfig as ICharacterDatabase;
     const config = database[unitId];

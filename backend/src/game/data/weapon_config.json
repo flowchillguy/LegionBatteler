@@ -1,36 +1,406 @@
 {
   "Weapon_1": {
     "info": {
-      "name": "Cung nhẹ",
+      "name": "Cung 1",
       "position": "Archer",
-      "cost": 3,
+      "cost": 13,
       "star": 1
     },
     "stats": {
-      "baseAtk": 50,
-      "multAtk": 0.5,
-      "multHp": 0,
-      "multDef": 0,
-      "addCritRate": 0.15,
-      "addCritDamage": 0.15,
-      "addSiege": 0.1,
-      "bonus": 0.1
+      "multDef": 0.52,
+      "addSiege": 0.42,
+      "bonus": 0.61,
+      "multAtk": 0.87,
+      "flatDef": 49,
+      "addCritRate": 0.16
     }
   },
   "Weapon_2": {
     "info": {
-      "name": "Cung dài",
+      "name": "Cung 2",
       "position": "Archer",
+      "cost": 12,
+      "star": 1
+    },
+    "stats": {
+      "addSiege": 0.64,
+      "multHp": 0.38,
+      "multDef": 0.22,
+      "addCritRate": 0.08,
+      "flatDef": 32,
+      "flatAtk": 55
+    }
+  },
+  "Weapon_3": {
+    "info": {
+      "name": "Cung 3",
+      "position": "Archer",
+      "cost": 10,
+      "star": 2
+    },
+    "stats": {
+      "baseAtk": 57,
+      "multDef": 0.13,
+      "multHp": 0.6,
+      "addSiege": 0.78,
+      "flatHp": 866,
+      "flatDef": 26,
+      "bonus": 0.78
+    }
+  },
+  "Weapon_4": {
+    "info": {
+      "name": "Cung 4",
+      "position": "Archer",
+      "cost": 13,
+      "star": 2
+    },
+    "stats": {
+      "addCritRate": 0.05,
+      "baseAtk": 29,
+      "bonus": 0.6,
+      "multAtk": 0.08,
+      "flatHp": 650,
+      "multDef": 0.9,
+      "multHp": 0.22
+    }
+  },
+  "Weapon_5": {
+    "info": {
+      "name": "Cung 5",
+      "position": "Archer",
+      "cost": 4,
+      "star": 3
+    },
+    "stats": {
+      "baseAtk": 24,
+      "addCritRate": 0.11,
+      "bonus": 0.1,
+      "addSiege": 0.64,
+      "flatAtk": 77
+    }
+  },
+  "Weapon_6": {
+    "info": {
+      "name": "Khiên 6",
+      "position": "Defender",
+      "cost": 4,
+      "star": 1
+    },
+    "stats": {
+      "multAtk": 0.48,
+      "multDef": 0.59,
+      "flatDef": 65,
+      "flatHp": 899,
+      "addSiege": 0.93,
+      "addCritDamage": 0.61,
+      "bonus": 0.95
+    }
+  },
+  "Weapon_7": {
+    "info": {
+      "name": "Khiên 7",
+      "position": "Defender",
+      "cost": 9,
+      "star": 1
+    },
+    "stats": {
+      "bonus": 0.7,
+      "flatAtk": 70,
+      "multDef": 0.98,
+      "multAtk": 0.07,
+      "addCritRate": 0.09,
+      "addCritDamage": 0.41,
+      "addSiege": 0.32,
+      "multHp": 0.82
+    }
+  },
+  "Weapon_8": {
+    "info": {
+      "name": "Khiên 8",
+      "position": "Defender",
+      "cost": 12,
+      "star": 2
+    },
+    "stats": {
+      "addCritDamage": 0.73,
+      "addCritRate": 0.07,
+      "bonus": 0.42,
+      "flatHp": 834,
+      "multAtk": 0.4,
+      "multDef": 0.94,
+      "baseAtk": 55,
+      "flatAtk": 85
+    }
+  },
+  "Weapon_9": {
+    "info": {
+      "name": "Khiên 9",
+      "position": "Defender",
       "cost": 4,
       "star": 2
     },
     "stats": {
-      "baseAtk": 55,
-      "multAtk": 0.6,
-      "multHp": 0,
-      "multDef": 0,
-      "addSiege": 0.1,
-      "bonus": 0.6
+      "multDef": 0.38,
+      "flatDef": 73,
+      "flatAtk": 25,
+      "multAtk": 0.66,
+      "baseAtk": 65,
+      "addCritDamage": 0.59,
+      "addCritRate": 0.04,
+      "bonus": 0.36
+    }
+  },
+  "Weapon_10": {
+    "info": {
+      "name": "Khiên 10",
+      "position": "Defender",
+      "cost": 10,
+      "star": 3
+    },
+    "stats": {
+      "multAtk": 0.38,
+      "bonus": 0.07,
+      "flatDef": 46,
+      "baseAtk": 18
+    }
+  },
+  "Weapon_11": {
+    "info": {
+      "name": "Trượng 11",
+      "position": "Support",
+      "cost": 6,
+      "star": 1
+    },
+    "stats": {
+      "multDef": 0.39,
+      "multHp": 0.09,
+      "flatAtk": 39,
+      "baseAtk": 80
+    }
+  },
+  "Weapon_12": {
+    "info": {
+      "name": "Trượng 12",
+      "position": "Support",
+      "cost": 7,
+      "star": 1
+    },
+    "stats": {
+      "flatHp": 454,
+      "baseAtk": 51,
+      "multAtk": 0.72,
+      "multDef": 0.6,
+      "addSiege": 0.8,
+      "addCritRate": 0.17
+    }
+  },
+  "Weapon_13": {
+    "info": {
+      "name": "Trượng 13",
+      "position": "Support",
+      "cost": 11,
+      "star": 2
+    },
+    "stats": {
+      "multAtk": 0.41,
+      "baseAtk": 82,
+      "flatHp": 669,
+      "addSiege": 0.08,
+      "multHp": 0.71
+    }
+  },
+  "Weapon_14": {
+    "info": {
+      "name": "Trượng 14",
+      "position": "Support",
+      "cost": 13,
+      "star": 2
+    },
+    "stats": {
+      "addCritDamage": 0.7,
+      "multDef": 0.15,
+      "addSiege": 0.41,
+      "bonus": 0.73
+    }
+  },
+  "Weapon_15": {
+    "info": {
+      "name": "Trượng 15",
+      "position": "Support",
+      "cost": 6,
+      "star": 3
+    },
+    "stats": {
+      "addCritDamage": 0.3,
+      "bonus": 0.38,
+      "multAtk": 0.59,
+      "flatHp": 877,
+      "addSiege": 0.97,
+      "baseAtk": 34,
+      "flatAtk": 32
+    }
+  },
+  "Weapon_16": {
+    "info": {
+      "name": "Kiếm 16",
+      "position": "Fighter",
+      "cost": 11,
+      "star": 1
+    },
+    "stats": {
+      "flatDef": 91,
+      "addCritRate": 0.07,
+      "multDef": 0.9,
+      "bonus": 0.61,
+      "addCritDamage": 0.21,
+      "addSiege": 0.8
+    }
+  },
+  "Weapon_17": {
+    "info": {
+      "name": "Kiếm 17",
+      "position": "Fighter",
+      "cost": 10,
+      "star": 1
+    },
+    "stats": {
+      "flatAtk": 17,
+      "multAtk": 0.22,
+      "multDef": 0.69,
+      "addSiege": 0.48,
+      "baseAtk": 49
+    }
+  },
+  "Weapon_18": {
+    "info": {
+      "name": "Kiếm 18",
+      "position": "Fighter",
+      "cost": 6,
+      "star": 2
+    },
+    "stats": {
+      "multAtk": 0.09,
+      "addCritRate": 0.01,
+      "addCritDamage": 0.61,
+      "bonus": 0.85,
+      "baseAtk": 54,
+      "addSiege": 0.26
+    }
+  },
+  "Weapon_19": {
+    "info": {
+      "name": "Kiếm 19",
+      "position": "Fighter",
+      "cost": 5,
+      "star": 2
+    },
+    "stats": {
+      "flatAtk": 74,
+      "multHp": 0.17,
+      "flatHp": 52,
+      "bonus": 0.89,
+      "flatDef": 51
+    }
+  },
+  "Weapon_20": {
+    "info": {
+      "name": "Kiếm 20",
+      "position": "Fighter",
+      "cost": 13,
+      "star": 3
+    },
+    "stats": {
+      "baseAtk": 26,
+      "bonus": 0.67,
+      "multDef": 0.96,
+      "addCritDamage": 0.59,
+      "multAtk": 0.1,
+      "addSiege": 0.21
+    }
+  },
+  "Weapon_21": {
+    "info": {
+      "name": "Rìu 21",
+      "position": "Destroyer",
+      "cost": 13,
+      "star": 1
+    },
+    "stats": {
+      "flatDef": 70,
+      "addCritDamage": 0.73,
+      "addSiege": 0.28,
+      "addCritRate": 0.17,
+      "flatHp": 494,
+      "baseAtk": 50,
+      "multHp": 0.07
+    }
+  },
+  "Weapon_22": {
+    "info": {
+      "name": "Rìu 22",
+      "position": "Destroyer",
+      "cost": 12,
+      "star": 1
+    },
+    "stats": {
+      "baseAtk": 76,
+      "bonus": 0.28,
+      "flatHp": 814,
+      "multDef": 0.09,
+      "flatAtk": 73
+    }
+  },
+  "Weapon_23": {
+    "info": {
+      "name": "Rìu 23",
+      "position": "Destroyer",
+      "cost": 13,
+      "star": 2
+    },
+    "stats": {
+      "bonus": 0.63,
+      "addSiege": 0.73,
+      "flatDef": 41,
+      "flatHp": 926,
+      "baseAtk": 53,
+      "addCritRate": 0.04,
+      "multHp": 0.2
+    }
+  },
+  "Weapon_24": {
+    "info": {
+      "name": "Rìu 24",
+      "position": "Destroyer",
+      "cost": 7,
+      "star": 2
+    },
+    "stats": {
+      "addCritRate": 0.02,
+      "flatDef": 9,
+      "flatHp": 261,
+      "bonus": 0.08,
+      "multHp": 0.67,
+      "multAtk": 0.49,
+      "baseAtk": 95,
+      "multDef": 0.81
+    }
+  },
+  "Weapon_25": {
+    "info": {
+      "name": "Rìu 25",
+      "position": "Destroyer",
+      "cost": 10,
+      "star": 3
+    },
+    "stats": {
+      "flatDef": 96,
+      "multHp": 0.43,
+      "bonus": 0.11,
+      "multDef": 0.54,
+      "addCritDamage": 0.93,
+      "baseAtk": 23,
+      "addCritRate": 0.18
     }
   }
 }

@@ -4,7 +4,7 @@ import type { IBuffData } from "../types/EntitiesTypes.js";
 import type { IweaponDataBase } from "../types/JsonTypes.js";
 
 const database = weaponConfig as IweaponDataBase;
-type TWeaponId = keyof typeof weaponConfig;
+export type TWeaponId = keyof typeof weaponConfig;
 
 export class WeaponFactory {
   static createWeapon(weaponId: TWeaponId): Weapon {
@@ -50,14 +50,10 @@ export class WeaponFactory {
     return new Weapon(statsWeapon);
   }
 
-  static createAllWeapon(): Record<TWeaponId, Weapon> {
-    const weaponsDepot = {} as Record<TWeaponId, Weapon>;
+  // Chuyển Return Type thành Map<TWeaponId, Weapon>
+  static createAllWeapon(): Map<TWeaponId, Weapon> {
     const weaponIds = Object.keys(database) as TWeaponId[];
-    for (const weaponId of weaponIds) {
-      weaponsDepot[weaponId] = this.createWeapon(weaponId);
-    }
-    return weaponsDepot;
+
+    return new Map(weaponIds.map((id) => [id, this.createWeapon(id)]));
   }
 }
-
-console.log(WeaponFactory.createAllWeapon());

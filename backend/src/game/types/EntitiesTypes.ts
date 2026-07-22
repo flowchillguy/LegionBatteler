@@ -67,7 +67,7 @@ export interface IWeapon {
 }
 
 export interface IStatsCombat {
-  weapon: Weapon | null;
+  weapon: Weapon[] | null;
   atk: StatsNormal;
   hp: StatsNormal;
   def: StatsNormal;

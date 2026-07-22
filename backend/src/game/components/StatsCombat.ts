@@ -4,7 +4,6 @@ import { StatsAdvanced } from "./StatsAdvanced.js";
 import { StatsNormal } from "./StatsNormal.js";
 
 export class StatsCombat {
-  weapon: Weapon | null;
   atk: StatsNormal;
   hp: StatsNormal;
   def: StatsNormal;
@@ -15,7 +14,6 @@ export class StatsCombat {
   activeBuffs: Map<string, IBuffData> = new Map();
 
   constructor(stats: IStatsCombat) {
-    this.weapon = stats.weapon ?? null;
     this.atk = stats.atk;
     this.hp = stats.hp;
     this.def = stats.def;

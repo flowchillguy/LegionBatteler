@@ -1,4 +1,5 @@
 import type { IDamageable } from "../types/EntitiesTypes.js";
+import type { ILevelUp } from "../types/LevelUpTypes.js";
 
 const MAX_GOLD = 999;
 const MAX_LEVEL = 5;
@@ -8,9 +9,9 @@ const GOLD_UNIT_DROP = 1;
 const GOLD_FORTRESS_DROP = 4;
 const CYCLE = 5; // 5 giây nhận 1 lần (chu kỳ)
 
-export class GoldManager {
+export class GoldManager implements ILevelUp {
   gold: number = 0;
-  economyLevel: number = 0;
+  level: number = 0;
   goldTimer: number = 0;
 
   // khả năng tri chả
@@ -26,12 +27,10 @@ export class GoldManager {
   }
 
   // lên cấp
-  upgradeEconomy(): boolean {
-    if (this.economyLevel < MAX_LEVEL) {
-      this.economyLevel++;
-      return true;
+  lvUp() {
+    if (this.level < MAX_LEVEL) {
+      this.level++;
     }
-    return false;
   }
 
   // hàm cộng gold
@@ -45,7 +44,7 @@ export class GoldManager {
     this.goldTimer += deltaTime;
     if (this.goldTimer >= CYCLE) {
       this.goldTimer -= CYCLE;
-      const salary = GOLD_INCOME * (1 + this.economyLevel * GOLD_BONUS);
+      const salary = GOLD_INCOME * (1 + this.level * GOLD_BONUS);
       this.receiveGold(salary);
     }
   }

@@ -7,6 +7,7 @@ import {
   type IBuffData,
   type TPosition,
 } from "../types/EntitiesTypes.js";
+import type { ILevelUp } from "../types/LevelUpTypes.js";
 
 // chỉ số cộng hưởng
 const BASE_VALUE = 10;
@@ -15,7 +16,7 @@ const ADD_VALUE = 0.6;
 
 // chỉ số level
 const MAX_LEVEL = 5;
-const BUFF_LEVEL_DATA = {
+const BASE_BUFF_LEVEL_DATA = {
   baseAtk: 5,
   multHp: 0.05,
   multDef: 0.05,
@@ -23,7 +24,7 @@ const BUFF_LEVEL_DATA = {
 
 const database = unitsConfig as ICharacterDatabase;
 
-export class DeckManager {
+export class DeckManager implements ILevelUp {
   countPosition = ALL_POSITIONS_OF_UNITS.reduce(
     (cp, pos) => {
       cp[pos] = 0;
@@ -60,6 +61,15 @@ export class DeckManager {
     };
   }
 
+  private getBuffData(level: number) {
+    return Object.fromEntries(
+      Object.entries(BASE_BUFF_LEVEL_DATA).map(([key, value]) => [
+        key,
+        value * level,
+      ]),
+    );
+  }
+
   applyBuffSynergy(units: Units) {
     units.actionCombat.statsCombat.addBuff("synergy", this.buffData);
   }
@@ -68,8 +78,14 @@ export class DeckManager {
     if (this.level < MAX_LEVEL) {
       units.actionCombat.statsCombat.addBuff(
         `level_${this.level}_buff`,
-        BUFF_LEVEL_DATA,
+        this.getBuffData(this.level),
       );
+    }
+  }
+
+  lvUp() {
+    if (this.level < MAX_LEVEL) {
+      this.level++;
     }
   }
 }

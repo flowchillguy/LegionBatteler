@@ -43,12 +43,4 @@ export class Weapon {
       effectiveBuff,
     );
   }
-
-  // Tạm thời không dùng với cơ chế khóa vũ khí
-  disarm(units: Units) {
-    const statsCombat = units.actionCombat.statsCombat;
-    if (statsCombat.weapon?.name === this.name) {
-      statsCombat.removeBuff(`weapon_${this.name}`);
-    }
-  }
 }

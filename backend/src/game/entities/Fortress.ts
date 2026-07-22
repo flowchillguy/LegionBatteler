@@ -4,6 +4,7 @@ import type {
   TTeam,
   TX,
 } from "../types/EntitiesTypes.js";
+import type { ILevelUp } from "../types/LevelUpTypes.js";
 
 const DEFAULT_HP = 1000;
 const DEFAULT_DEF = 100;
@@ -11,7 +12,7 @@ const DEFAULT_DEF_FACTOR = 100;
 const HP_HEAL_WHEN_LV_UP = 500;
 const MAX_LEVEL = 5;
 
-export class Fortress implements IDamageable {
+export class Fortress implements IDamageable, ILevelUp {
   team: TTeam;
   position: TPosition = "Fortress";
   x: TX;
@@ -35,7 +36,7 @@ export class Fortress implements IDamageable {
     return this.currentHp <= 0;
   }
 
-  levelUp(): void {
+  lvUp(): void {
     if (this.level < MAX_LEVEL) {
       this.currentHp += HP_HEAL_WHEN_LV_UP;
       this.level++;
