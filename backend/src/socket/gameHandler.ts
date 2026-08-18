@@ -5,9 +5,22 @@ import type { GameSession } from "../models/Game.js";
 export const activeGames: Record<string, GameSession> = {};
 
 export const registerGameHandlers = (io: Server, socket: Socket) => {
+  const username = socket.data?.user?.username;
+  // Gửi trạng thái in game về cho người chơi định kì fps 60
+
+  // Nắng nghe người chơi gửi tín hiệu:
+
+  
+  // Chọn unit ban đầu (be tự tính cộng hưởng )
+  socket.on("pick_units", ({ data }) => {});
+  // Thả unit
+  // nâng cấp: fortress, units, shop (weapon), gold.
+
+  // Mua và bán vũ khí
+  // Trang bị vũ khí cho unit
+
   // Đầu hàng
   socket.on("surrender", ({ gameRoomId }) => {
-    const username = socket.data?.user?.username;
     console.log(`User ${username} đã đầu hàng, phòng ${gameRoomId}`);
 
     // cập nhập trạng thái
